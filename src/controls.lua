@@ -9,13 +9,15 @@ local controls = {
         :addButtonPair(tactile.keys "up", tactile.keys "down"),
 }
 
-function controls.update(dt)
+function controls.update(dt, player)
     if love.keyboard.isDown("escape") then
         love.event.quit()
     end
 
     controls.horizontal:update()
     controls.vertical:update()
+
+    player.move(controls.horizontal() * dt * 300)
 end
 
 return controls
