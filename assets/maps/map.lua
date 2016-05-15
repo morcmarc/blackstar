@@ -7,36 +7,28 @@ return {
   width = 32,
   height = 10,
   tilewidth = 64,
-  tileheight = 32,
-  nextobjectid = 3,
-  backgroundcolor = { 204, 228, 255, 0 },
+  tileheight = 64,
+  nextobjectid = 1,
   properties = {},
   tilesets = {
     {
-      name = "grass",
+      name = "swamp1",
       firstgid = 1,
       tilewidth = 64,
-      tileheight = 32,
+      tileheight = 64,
       spacing = 0,
       margin = 0,
-      image = "grass.png",
-      imagewidth = 300,
-      imageheight = 220,
+      image = "swamp1.png",
+      imagewidth = 64,
+      imageheight = 64,
       tileoffset = {
         x = 0,
         y = 0
       },
       properties = {},
       terrains = {},
-      tilecount = 24,
-      tiles = {
-        {
-          id = 0,
-          properties = {
-            ["collidable"] = "true"
-          }
-        }
-      }
+      tilecount = 1,
+      tiles = {}
     }
   },
   layers = {
@@ -51,12 +43,10 @@ return {
       opacity = 1,
       offsetx = 0,
       offsety = 0,
-      properties = {
-        ["collidable"] = "true"
-      },
+      properties = {},
       encoding = "base64",
       compression = "gzip",
-      data = "H4sIAAAAAAAAA2NgGAWjYBQMFGCkE8YFWOmEcQFOOmFcAADvxkHmAAUAAA=="
+      data = "H4sIAAAAAAAAA2NgGAWjYBSMgoEBjAOMAdqKUncABQAA"
     }
   }
 }
