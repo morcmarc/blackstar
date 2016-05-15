@@ -1,4 +1,5 @@
 local tactile = require "vendor.tactile.tactile"
+local event   = require "vendor.knife.knife.event"
 
 local controls = {
     horizontal = tactile.newControl()
@@ -9,7 +10,7 @@ local controls = {
         :addButtonPair(tactile.keys "up", tactile.keys "down"),
 }
 
-function controls.update(dt, player)
+function controls.update(dt)
     if love.keyboard.isDown("escape") then
         love.event.quit()
     end
@@ -17,7 +18,7 @@ function controls.update(dt, player)
     controls.horizontal:update()
     controls.vertical:update()
 
-    player.move(controls.horizontal() * dt * 300)
+    event.dispatch("player:move", controls.horizontal() * dt)
 end
 
 return controls

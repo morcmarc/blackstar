@@ -25,7 +25,7 @@ function love.load()
 end
 
 function love.update(dt)
-    controls.update(dt, player)
+    controls.update(dt)
     level.update(dt)
     player.update(dt)
 end
