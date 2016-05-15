@@ -1,19 +1,19 @@
 local sodapop = require "vendor.sodapop.sodapop"
 
 local player = {
-    x       = 60,
+    x       = 0,
     y       = 0,
     sprite  = nil,
 }
 
 function player.init()    
     player.sprite = sodapop.newAnimatedSprite(64, 64)
-    player.sprite:addAnimation("walk", {
-        image       = love.graphics.newImage "assets/sprites/hero.png",
+    player.sprite:addAnimation("stand", {
+        image       = love.graphics.newImage "assets/sprites/hero_stand.png",
         frameWidth  = 128,
         frameHeight = 128,
         frames      = {
-            {1, 1, 1, 1, 1.0}
+            {1, 1, 3, 1, .20}
         },
     })
 end
