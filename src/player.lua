@@ -3,6 +3,8 @@ local Event     = require "vendor.knife.knife.event"
 local Behaviour = require "vendor.knife.knife.behavior"
 local Class     = require "vendor.hump.class"
 
+local jumpTimer = 0.18
+
 local Player = Class {
     init = function(self, x, y)
         -- Player coords
@@ -107,10 +109,17 @@ function Player:update(dt)
     self.behaviour:update(dt)
 
     if self.behaviour.state == "jumping" then
+        jumpTimer = jumpTimer - dt
+        if jumpTimer > 0 then
+            self.y = self.y - 3
+        end
+        if jumpTimer < 0 and jumpTimer > -0.16 then
+            self.y = self.y + 3
+        end
         if self.sprites.flipX then
-            self.x = self.x + -1 * 10
+            self.x = self.x + -1 * 15
         else
-            self.x = self.x + 10
+            self.x = self.x + 15
         end
     end
 
@@ -130,6 +139,7 @@ end
 
 function Player:willJump()
     if Blackstar._DEBUG_MODE then print("-- willJump : ()") end
+    jumpTimer = 0.18
 end
 
 function Player:startJump()
