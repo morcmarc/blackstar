@@ -1,24 +1,29 @@
-local tactile = require "vendor.tactile.tactile"
-local event   = require "vendor.knife.knife.event"
+local Tactile = require "vendor.tactile.tactile"
+local Event   = require "vendor.knife.knife.event"
+local Class   = require "vendor.hump.class"
 
-local controls = {
-    horizontal = tactile.newControl()
-        :addAxis(tactile.gamepadAxis(1, "leftx"))
-        :addButtonPair(tactile.keys "left", tactile.keys "right"),
-    vertical = tactile.newControl()
-        :addAxis(tactile.gamepadAxis(1, "lefty"))
-        :addButtonPair(tactile.keys "up", tactile.keys "down"),
+local Controls = Class {
+    init = function(self)
+        self.bindings = {
+            horizontal = Tactile.newControl()
+                :addAxis(Tactile.gamepadAxis(1, "leftx"))
+                :addButtonPair(Tactile.keys "left", Tactile.keys "right"),
+            vertical = Tactile.newControl()
+                :addAxis(Tactile.gamepadAxis(1, "lefty"))
+                :addButtonPair(Tactile.keys "up", Tactile.keys "down"),
+        }
+    end,
 }
 
-function controls.update(dt)
+function Controls:update(dt)
     if love.keyboard.isDown("escape") then
         love.event.quit()
     end
 
-    controls.horizontal:update()
-    controls.vertical:update()
+    self.bindings.horizontal:update()
+    self.bindings.vertical:update()
 
-    event.dispatch("player:move", controls.horizontal() * dt)
+    Event.dispatch("player:move", self.bindings.horizontal() * dt)
 end
 
-return controls
+return Controls

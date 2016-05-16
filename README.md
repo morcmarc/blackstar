@@ -20,3 +20,4 @@ LÖVE (the software) is licensed under the terms of the ZLIB license.
 - [Simple Tiled Implementation](https://github.com/karai17/Simple-Tiled-Implementation) (MIT) 
 - [Tactile](https://github.com/tesselode/tactile) (MIT)
 - [Knife](https://github.com/airstruck/knife) (MIT)
+- [Hump](https://github.com/vrld/hump) (MIT)

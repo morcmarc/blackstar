@@ -1,22 +1,24 @@
-local sti = require "vendor.sti"
+local STI   = require "vendor.sti"
+local Event = require "vendor.knife.knife.event"
+local Class = require "vendor.hump.class"
 
-local level = {
-    map = nil,
+local Level = Class {
+    init = function(self)
+        self.map = STI.new("assets/maps/map.lua")
+        self.x   = 0
+        self.y   = -32
+    end,
 }
 
-function level.init()
-    level.map = sti.new("assets/maps/map.lua")
+function Level:update(dt)
+    self.map:update(dt)
 end
 
-function level.draw()
+function Level:draw()
     love.graphics.push()
-        love.graphics.translate(0, -32)
-        level.map:draw()
+        love.graphics.translate(self.x, self.y)
+        self.map:draw()
     love.graphics.pop()
 end
 
-function level.update(dt)
-    level.map:update(dt)
-end
-
-return level
+return Level
