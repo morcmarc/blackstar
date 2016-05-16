@@ -8,9 +8,9 @@ local Controls = Class {
             horizontal = Tactile.newControl()
                 :addAxis(Tactile.gamepadAxis(1, "leftx"))
                 :addButtonPair(Tactile.keys "left", Tactile.keys "right"),
-            vertical = Tactile.newControl()
-                :addAxis(Tactile.gamepadAxis(1, "lefty"))
-                :addButtonPair(Tactile.keys "up", Tactile.keys "down"),
+            jump = Tactile.newControl()
+                :addButton(Tactile.keys "space")
+                :addButton(Tactile.gamepadButtons(1, 'b'))
         }
     end,
 }
@@ -21,8 +21,13 @@ function Controls:update(dt)
     end
 
     self.bindings.horizontal:update()
-    self.bindings.vertical:update()
+    self.bindings.jump:update()
 
+    if self.bindings.jump:isDown() then
+        Event.dispatch("player:jump")
+        return
+    end
+    
     Event.dispatch("player:move", self.bindings.horizontal() * dt)
 end
 
