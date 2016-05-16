@@ -2,18 +2,17 @@ local Player    = require "src.player"
 local Level     = require "src.level"
 local Controls  = require "src.gamecontrols"
 local FPS       = require "src.fps"
+local Camera    = require "src.camera"
 local Shine     = require "vendor.shine"
 
-local Game = {
-    player     = nil,
-    level      = nil,
-    controls   = nil,
-    postEffect = nil,
-}
+local Game = {}
 
 function Game:init()
     -- Initialise components
-    self.player   = Player(love.graphics.getWidth()/2, love.graphics.getHeight()-128)
+    self.camera   = Camera(
+        love.graphics.getWidth()/2, love.graphics.getHeight()-128)
+    self.player   = Player(
+        love.graphics.getWidth()/2, love.graphics.getHeight()-128)
     self.level    = Level()
     self.controls = Controls()
 
@@ -28,10 +27,12 @@ function Game:draw()
     love.graphics.clear()
     
     self.postEffect:draw(function()
-        -- Draw level
-        self.level:draw()
-        -- Draw player
-        self.player:draw()
+        self.camera:attach()
+            -- Draw level
+            self.level:draw()
+            -- Draw player
+            self.player:draw()
+        self.camera:detach()
     end)
 
     -- Draw FPS counter
@@ -42,6 +43,7 @@ function Game:update(dt)
     self.controls:update(dt)
     self.level:update(dt)
     self.player:update(dt)
+    self.camera:update(dt, self.player)
 end
 
 return Game

@@ -6,7 +6,7 @@ local Level = Class {
     init = function(self)
         self.map = STI.new("assets/maps/map.lua")
         self.x   = 0
-        self.y   = -32
+        self.y   = 0
     end,
 }
 
@@ -16,7 +16,7 @@ end
 
 function Level:draw()
     love.graphics.push()
-        love.graphics.translate(self.x, self.y)
+        love.graphics.translate(self.x, self.y - 32)
         self.map:draw()
     love.graphics.pop()
 end

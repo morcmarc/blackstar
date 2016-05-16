@@ -9,6 +9,8 @@ local Player = Class {
         self.x  = x
         self.y  = y
 
+        self.dx = 0
+
         -- Sprite frame size
         self.sW = 128
         self.sH = 128
@@ -72,7 +74,7 @@ local Player = Class {
             },
             jumping = {
                 {
-                    duration      = 0.6,
+                    duration      = 0.36,
                     after         = "didJump",
                     action        = function() self:startJump() end,
                     interruptable = false,
@@ -80,7 +82,7 @@ local Player = Class {
             },
             didJump = {
                 {
-                    duration      = 0.5,
+                    duration      = 0.08,
                     after         = "default",
                     action        = function() self:didJump() end,
                     interruptable = false,
@@ -95,7 +97,6 @@ local Player = Class {
 
 function Player:draw()
     love.graphics.push()
-        -- 7 = headroom
         love.graphics.translate(self.x - self.sW, self.y - self.sH + 7)
         self.sprites:draw()
     love.graphics.pop()
@@ -104,6 +105,19 @@ end
 function Player:update(dt)
     self.sprites:update(dt)
     self.behaviour:update(dt)
+
+    if self.behaviour.state == "jumping" then
+        if self.sprites.flipX then
+            self.x = self.x + -1 * 10
+        else
+            self.x = self.x + 10
+        end
+    end
+
+    if self.behaviour.state == "walking" then
+        self.x = self.x + self.dx * 300
+        self.sprites.flipX = (self.dx < 0)
+    end
 end
 
 function Player:startWalk()
@@ -115,7 +129,7 @@ function Player:goIdle()
 end
 
 function Player:willJump()
-    if Blackstar._DEBUG_MODE then print("-- willJump()") end
+    if Blackstar._DEBUG_MODE then print("-- willJump : ()") end
 end
 
 function Player:startJump()
@@ -123,27 +137,30 @@ function Player:startJump()
 end
 
 function Player:didJump()
-    if Blackstar._DEBUG_MODE then print("-- didJump()") end
+    if Blackstar._DEBUG_MODE then print("-- didJump  : ()") end
 end
 
 function Player:move(dx)
+    self.dx = dx
+
     -- Cannot walk while doing something "important", like jumping
     if self.behaviour.frame.interruptable == false then
         return
     end
+
     -- Standing? Go idle
-    if dx == 0 then
+    if self.dx == 0 then
         if self.behaviour.state ~= "default" then
             self.behaviour:setState("default")
         end
         return
     end
-    -- Cannot start walking while already walking
+
+    -- Walking already?
     if self.behaviour.state == "walking" then
-        self.x = self.x + dx * 300
-        self.sprites.flipX = (dx < 0)
         return
     end
+
     self.behaviour:setState("walking")
 end
 
