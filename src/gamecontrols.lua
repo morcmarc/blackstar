@@ -2,7 +2,7 @@ local Tactile = require "vendor.tactile.tactile"
 local Event   = require "vendor.knife.knife.event"
 local Class   = require "vendor.hump.class"
 
-local Controls = Class {
+local GameControls = Class {
     init = function(self)
         self.bindings = {
             horizontal = Tactile.newControl()
@@ -15,7 +15,7 @@ local Controls = Class {
     end,
 }
 
-function Controls:update(dt)
+function GameControls:update(dt)
     if love.keyboard.isDown("escape") then
         love.event.quit()
     end
@@ -31,4 +31,4 @@ function Controls:update(dt)
     Event.dispatch("player:move", self.bindings.horizontal() * dt)
 end
 
-return Controls
+return GameControls

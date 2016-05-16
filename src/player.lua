@@ -115,7 +115,7 @@ function Player:goIdle()
 end
 
 function Player:willJump()
-    if Game._DEBUG_MODE then print("-- willJump()") end
+    if Blackstar._DEBUG_MODE then print("-- willJump()") end
 end
 
 function Player:startJump()
@@ -123,7 +123,7 @@ function Player:startJump()
 end
 
 function Player:didJump()
-    if Game._DEBUG_MODE then print("-- didJump()") end
+    if Blackstar._DEBUG_MODE then print("-- didJump()") end
 end
 
 function Player:move(dx)
