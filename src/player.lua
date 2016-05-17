@@ -11,8 +11,10 @@ local Player = Class {
         -- Player coords
         self.x  = x
         self.y  = y
-
         self.dx = 0
+
+        -- Stats and attributes
+        self.hp = 100
 
         -- Sprite frame size
         self.sW = 128
@@ -108,6 +110,9 @@ end
 function Player:update(dt)
     self.sprites:update(dt)
     self.behaviour:update(dt)
+
+    -- @TODO: remove this, only here for testing
+    self.hp = self.hp - dt * 1
 
     -- @TODO: clean up
     if self.behaviour.state == "jumping" then

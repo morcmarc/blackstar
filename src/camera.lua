@@ -3,27 +3,22 @@ local Camera = require "vendor.hump.camera"
 local Event  = require "vendor.knife.knife.event"
 
 local Cam = Class {
-    init = function(self, x, y)
-        self.c = Camera(x, y)
+    init = function(self, player)
+        self.player = player
+        self.c      = Camera(player.x, player.y)
     end,
 }
 
-function Cam:update(dt, player)
+function Cam:update(dt)
     local dirCoeff = 1
-    if player.sprites.flipX then dirCoeff = -1 end
+    if self.player.sprites.flipX then dirCoeff = -1 end
     
     -- @TODO: could play around with this a bit more to see what works best,
     -- e.g.: lerp smoothing, physics smoothing, zoom-to-fit etc
     self.c:lockPosition(
-        player.x + love.graphics.getWidth() * 0.10 * dirCoeff,
-        player.y,
+        self.player.x + love.graphics.getWidth() * 0.17 * dirCoeff,
+        self.player.y,
         Camera.smooth.damped(2.5))
-
-    if player.behaviour.state == "jumping" then
-
-    else
-
-    end
 end
 
 function Cam:attach()
