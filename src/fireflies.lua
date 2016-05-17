@@ -2,13 +2,13 @@ local Class      = require "vendor.hump.class"
 local LightWorld = require "vendor.light_world.lib"
 
 local Fireflies = Class {
-    init = function(self, buffer, lighting, dir)
+    init = function(self, image, buffer, lighting, dir)
         self.buffer    = buffer
         self.lighting  = lighting
         self.dir       = dir
         self.x         = love.graphics.getWidth() / 2
         self.y         = love.graphics.getHeight() / 2
-        self.texture   = love.graphics.newImage("assets/sprites/firefly.png")
+        self.texture   = love.graphics.newImage(image)
         self.particles = love.graphics.newParticleSystem(self.texture, buffer)
 
         -- @TODO: figure out what to do with the lighting.

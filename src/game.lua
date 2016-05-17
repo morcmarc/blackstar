@@ -12,8 +12,10 @@ local Game = {}
 function Game:init()
     -- Lighting
     self.bgLighting = LightWorld({ ambient = {145, 155, 175} })
-    self.fireFiles1 = Fireflies(10, self.bgLighting,  1)
-    self.fireFiles2 = Fireflies(10, self.bgLighting, -2)
+    self.fireFiles1 = Fireflies(
+        "assets/sprites/firefly.png", 10, self.bgLighting,  1)
+    self.fireFiles2 = Fireflies(
+        "assets/sprites/firefly.png", 10, self.bgLighting, -2)
 
     -- Initialise components
     self.camera   = Camera(
@@ -32,19 +34,19 @@ function Game:init()
 end
 
 function Game:draw()
-    love.graphics.setBackgroundColor(68, 77, 69)
+    love.graphics.setBackgroundColor(255, 255, 255, 0) -- Transparent background
     love.graphics.clear()
 
-    self.postEffect:draw(function()
-        self.bgLighting:draw(function()
-            -- Draw fireflies
-            self.fireFiles1:draw()
-            self.fireFiles2:draw()
-        end)
+    self.bgLighting:draw(function()
+        -- Draw fireflies
+        self.fireFiles1:draw()
+        self.fireFiles2:draw()
+    end)
 
+    self.postEffect:draw(function()
         self.camera:attach()
             -- Draw level
-            -- self.level:draw()
+            self.level:draw()
             -- Draw player
             self.player:draw()
         self.camera:detach()

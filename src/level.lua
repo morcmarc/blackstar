@@ -16,7 +16,7 @@ end
 
 function Level:draw()
     love.graphics.push()
-        love.graphics.translate(self.x, self.y - 32)
+        love.graphics.translate(self.x, self.y + love.graphics.getHeight() - 64)
         self.map:draw()
     love.graphics.pop()
 end

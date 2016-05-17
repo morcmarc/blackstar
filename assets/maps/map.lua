@@ -4,8 +4,8 @@ return {
   tiledversion = "0.14.2",
   orientation = "orthogonal",
   renderorder = "right-down",
-  width = 32,
-  height = 10,
+  width = 10,
+  height = 1,
   tilewidth = 64,
   tileheight = 64,
   nextobjectid = 1,
@@ -18,7 +18,7 @@ return {
       tileheight = 64,
       spacing = 0,
       margin = 0,
-      image = "swamp1.png",
+      image = "../sprites/swamp1.png",
       imagewidth = 64,
       imageheight = 64,
       tileoffset = {
@@ -37,8 +37,8 @@ return {
       name = "Tile Layer 1",
       x = 0,
       y = 0,
-      width = 32,
-      height = 10,
+      width = 10,
+      height = 1,
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -46,7 +46,7 @@ return {
       properties = {},
       encoding = "base64",
       compression = "gzip",
-      data = "H4sIAAAAAAAAA2NgGAWjYBSMgoEBjAOMAdqKUncABQAA"
+      data = "H4sIAAAAAAAAA2NkYGBgJAIDALBnLoYoAAAA"
     }
   }
 }

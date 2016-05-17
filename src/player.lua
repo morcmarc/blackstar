@@ -4,6 +4,7 @@ local Behaviour = require "vendor.knife.knife.behavior"
 local Class     = require "vendor.hump.class"
 
 local jumpTimer = 0.18
+local velocity  = { x = 300, y = 3 }
 
 local Player = Class {
     init = function(self, x, y)
@@ -108,13 +109,14 @@ function Player:update(dt)
     self.sprites:update(dt)
     self.behaviour:update(dt)
 
+    -- @TODO: clean up
     if self.behaviour.state == "jumping" then
         jumpTimer = jumpTimer - dt
         if jumpTimer > 0 then
-            self.y = self.y - 3
+            self.y = self.y - velocity.y
         end
         if jumpTimer < 0 and jumpTimer > -0.16 then
-            self.y = self.y + 3
+            self.y = self.y + velocity.y
         end
         if self.sprites.flipX then
             self.x = self.x + -1 * 15
@@ -124,7 +126,7 @@ function Player:update(dt)
     end
 
     if self.behaviour.state == "walking" then
-        self.x = self.x + self.dx * 300
+        self.x = self.x + self.dx * velocity.x
         self.sprites.flipX = (self.dx < 0)
     end
 end

@@ -9,8 +9,21 @@ local Cam = Class {
 }
 
 function Cam:update(dt, player)
-    local dx, dy = player.x - self.c.x, player.y - self.c.y
-    self.c:move(dx/2, dy/2)
+    local dirCoeff = 1
+    if player.sprites.flipX then dirCoeff = -1 end
+    
+    -- @TODO: could play around with this a bit more to see what works best,
+    -- e.g.: lerp smoothing, physics smoothing, zoom-to-fit etc
+    self.c:lockPosition(
+        player.x + love.graphics.getWidth() * 0.10 * dirCoeff,
+        player.y,
+        Camera.smooth.damped(2.5))
+
+    if player.behaviour.state == "jumping" then
+
+    else
+
+    end
 end
 
 function Cam:attach()
