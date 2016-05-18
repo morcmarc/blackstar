@@ -4,8 +4,8 @@ local Fireflies = Class {
     init = function(self, image, buffer, dir)
         self.buffer    = buffer
         self.dir       = dir
-        self.x         = love.graphics.getWidth() / 2
-        self.y         = love.graphics.getHeight() / 2
+        self.x         = 0
+        self.y         = 0
         self.texture   = love.graphics.newImage(image)
         self.particles = love.graphics.newParticleSystem(self.texture, buffer)
 

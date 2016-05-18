@@ -12,13 +12,13 @@ local Cam = Class {
 function Cam:update(dt)
     local dirCoeff = 1
     if self.player.sprites.flipX then dirCoeff = -1 end
-    
+
     -- @TODO: could play around with this a bit more to see what works best,
-    -- e.g.: lerp smoothing, physics smoothing, zoom-to-fit etc
+    -- e.g.: vertical platform-snapping, target-focus, jump-zooming
     self.c:lockPosition(
         self.player.pos.x + love.graphics.getWidth() * 0.17 * dirCoeff,
-        self.player.pos.y - self.player.sH,
-        Camera.smooth.damped(2.5))
+        self.player.pos.y - self.player.sH / 2,
+        Camera.smooth.damped(3.5))
 end
 
 function Cam:attach()

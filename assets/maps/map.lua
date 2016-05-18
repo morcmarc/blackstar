@@ -4,8 +4,8 @@ return {
   tiledversion = "0.14.2",
   orientation = "orthogonal",
   renderorder = "right-down",
-  width = 10,
-  height = 2,
+  width = 100,
+  height = 10,
   tilewidth = 32,
   tileheight = 32,
   nextobjectid = 1,
@@ -63,8 +63,8 @@ return {
       name = "Tile Layer 1",
       x = 0,
       y = 0,
-      width = 10,
-      height = 2,
+      width = 100,
+      height = 10,
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -74,7 +74,7 @@ return {
       },
       encoding = "base64",
       compression = "gzip",
-      data = "H4sIAAAAAAAAA2NkYGBgJAIzEYkBB9bSLlAAAAA="
+      data = "H4sIAAAAAAAAA+3VQQ0AAAgDMcC/aCTwgvBok7OwRdzIIYBNNggAfpg+WbeVXtUGa48UoA8AAA=="
     }
   }
 }

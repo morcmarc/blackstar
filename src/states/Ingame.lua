@@ -1,5 +1,6 @@
 local Player   = require "src.entities.Player"
 local Camera   = require "src.entities.Camera"
+local Fireflies= require "src.entities.Fireflies"
 local HUD      = require "src.entities.Hud"
 local Debug    = require "src.entities.Debug"
 local Level    = require "src.entities.Level"
@@ -24,6 +25,7 @@ function Ingame:init()
     self.player   = Player(0,0)
     self.level    = Level(self.bumpWorld)
     self.camera   = Camera(self.player)
+    self.fireflies= Fireflies("assets/sprites/firefly.png", 10, -1)
     self.controls = Controls(self.camera.c, self.player)
     self.cursor   = Cursor()
     self.hud      = HUD(self.player)
@@ -35,6 +37,7 @@ function Ingame:init()
     self.world:add(self.controls)
     self.world:add(self.camera)
     self.world:add(self.cursor)
+    self.world:add(self.fireflies)
     self.world:add(self.hud)
 
     -- Post processing
@@ -44,12 +47,13 @@ function Ingame:init()
 end
 
 function Ingame:draw()
-    love.graphics.setBackgroundColor(128, 128, 128, 255)
+    love.graphics.setBackgroundColor(48, 96, 128, 255)
     love.graphics.clear()
 
     self.postEffect:draw(function()
         self.camera:attach()
             self.level:draw()
+            self.fireflies:draw()
             self.player:draw()
         self.camera:detach()
     end)
