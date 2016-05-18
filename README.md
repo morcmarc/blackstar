@@ -2,10 +2,6 @@
 
 Lovecraftian adventure-action game written in Lua (Löve2D).
 
-## Current status
-
-![Blackstar](https://raw.github.com/morcmarc/blackstar/master/demo.gif)
-
 ## License
 
 This software is licensed under the MIT License.
