@@ -22,7 +22,7 @@ local Player = Class {
             vMax = 300,  -- Max speed
             hJ   = 380,  -- Jump height
             mu   = 2000, -- Friction coefficient
-            dx   = 0,    -- Direction on the X-axis
+            dx   = 0,    -- Movement indicator (1: right, -1: left, 0: standing)
         }
         
         -- Collision information
@@ -139,9 +139,9 @@ function Player:update(dt)
     -- @TODO: remove this, only here for testing
     self.hp = self.hp - dt * 1
 
-    if self.behaviour.state == "walking" then
-        self.sprites.flipX = (self.platforming.dx < 0)
-    end
+    -- if self.behaviour.state == "walking" then
+    --     self.sprites.flipX = (self.platforming.dx < 0)
+    -- end
 end
 
 function Player:startWalk()
@@ -164,6 +164,7 @@ function Player:didJump()
 end
 
 function Player:move(dx)
+    -- Set movement direction
     self.platforming.dx = dx
 
     -- Cannot walk while doing something "important", like jumping

@@ -7,11 +7,11 @@ function PlatformingSystem:process(e, dt)
     local plt = e.platforming
 
     if e.behaviour.frame.moving then
-        if e.sprites.flipX then
+        if plt.dx < 0 then
             e.vel.x = math.max(
                 -plt.vMax, 
                 e.vel.x - plt.a * dt)
-        else
+        elseif plt.dx > 0 then
             e.vel.x = math.min(
                 plt.vMax, 
                 e.vel.x + plt.a * dt)

@@ -23,10 +23,16 @@ function MainMenu:draw()
     for k, v in pairs(self.menuItems) do
         if self.current == k then
             love.graphics.setColor(255, 182, 13)
-            love.graphics.print(v, 0, (10 + 2 * margin) * k)
+            love.graphics.print(
+                v, 
+                love.graphics.getWidth() / 2 - 30, 
+                love.graphics.getHeight() / 2 - 30 + (10 + 2 * margin) * k)
         else
             love.graphics.setColor(200, 200, 200)
-            love.graphics.print(v, 0, (10 + 2 * margin) * k)
+            love.graphics.print(
+                v, 
+                love.graphics.getWidth() / 2 - 30, 
+                love.graphics.getHeight() / 2 - 30 + (10 + 2 * margin) * k)
         end
     end
 end

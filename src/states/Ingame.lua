@@ -7,6 +7,7 @@ local Controls = require "src.controls.IngameControls"
 local Shine    = require "vendor.shine"
 local Tiny     = require "vendor.tiny-ecs.tiny"
 local Bump     = require "vendor.bump.bump"
+local Event    = require "vendor.knife.knife.event"
 
 local Ingame = {}
 
@@ -21,8 +22,8 @@ function Ingame:init()
     -- Entities / components
     self.player   = Player(0,0)
     self.level    = Level()
-    self.controls = Controls()
     self.camera   = Camera(self.player)
+    self.controls = Controls(self.camera.c, self.player)
     self.hud      = HUD(self.player)
     self.debug    = Debug(self.bumpWorld)
 
@@ -53,10 +54,14 @@ function Ingame:init()
     local vignette = Shine.vignette()
     vignette.parameters = {radius = 0.9, opacity = 0.25}
     self.postEffect = vignette
+
+    -- Set up mouse
+    love.mouse.setVisible(false)
+    self.cursorImg = love.graphics.newImage("assets/sprites/cursor.png")
 end
 
 function Ingame:draw()
-    love.graphics.setBackgroundColor(255, 255, 255, 0) -- Transparent background
+    love.graphics.setBackgroundColor(128, 128, 128, 255)
     love.graphics.clear()
 
     self.postEffect:draw(function()
@@ -74,6 +79,17 @@ function Ingame:draw()
             end
         self.camera:detach()
     end)
+
+    -- Draw cursor
+    local mx, my = love.mouse.getPosition()
+    local px, py = self.camera.c:cameraCoords(
+        self.player.pos.x + self.player.hitbox.w / 2,
+        self.player.pos.y)
+    love.graphics.draw(self.cursorImg, mx, my)
+    if Blackstar._DEBUG_MODE then
+        love.graphics.setColor(255, 0, 0)
+        love.graphics.line(px, py, mx, my)
+    end
 
     self.hud:draw()
 end
