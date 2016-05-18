@@ -125,7 +125,9 @@ local Player = Class {
 
 function Player:draw()
     love.graphics.push()
-        love.graphics.translate(self.pos.x - self.sW, self.pos.y - self.sH + 7)
+        love.graphics.translate(
+            self.pos.x - self.sW + self.hitbox.w / 2, 
+            self.pos.y - self.sH + 7)
         self.sprites:draw()
     love.graphics.pop()
 end

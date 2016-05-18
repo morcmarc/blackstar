@@ -12,7 +12,6 @@ end
 function HUD:draw()
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.print("HP:  " .. math.floor(self.player.hp), 10, 10)
-    love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 30)
 end
 
 return HUD
