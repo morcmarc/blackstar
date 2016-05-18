@@ -1,22 +1,27 @@
-local Player     = require "src.entities.Player"
-local Level      = require "src.level"
-local Controls   = require "src.controls.IngameControls"
-local Camera     = require "src.camera"
-local HUD        = require "src.hud"
-local Shine      = require "vendor.shine"
-local Tiny       = require "vendor.tiny-ecs.tiny"
+local Player   = require "src.entities.Player"
+local Level    = require "src.level"
+local Controls = require "src.controls.IngameControls"
+local Camera   = require "src.camera"
+local HUD      = require "src.hud"
+local Shine    = require "vendor.shine"
+local Tiny     = require "vendor.tiny-ecs.tiny"
+local Bump     = require "vendor.bump.bump"
 
 local Ingame = {}
 
 function Ingame:init()
-    -- World
+    -- Set up World
+    self.bumpWorld = Bump.newWorld(32)
     self.world  = Tiny.world(
         require ("src.systems.PlatformingSystem")(),
+        require ("src.systems.BumpPhysicsSystem")(self.bumpWorld),
         require ("src.systems.UpdateSystem")())
     
     -- Entities / components
-    self.player = Player(love.graphics.getWidth()/2, love.graphics.getHeight()-256)
-    self.level  = Level()
+    self.player   = Player(
+        love.graphics.getWidth() / 2 - 150,
+        0)
+    self.level    = Level()
     self.controls = Controls()
     self.camera   = Camera(self.player)
     self.hud      = HUD(self.player)
@@ -27,6 +32,22 @@ function Ingame:init()
     self.world:add(self.controls)
     self.world:add(self.camera)
     self.world:add(self.hud)
+
+    -- Add tiles and objects to Bump World
+    for lindex, layer in ipairs(self.level.map.layers) do
+        local prefix = layer.properties.oneway == "true" and "o(" or "t("
+        for y, tiles in ipairs(layer.data) do
+            for x, tile in pairs(tiles) do
+                self.bumpWorld:add(
+                    prefix..layer.name..", "..x..", "..y..")",
+                    x * self.level.map.tilewidth  + tile.offset.x,
+                    y * self.level.map.tileheight + tile.offset.y,
+                    tile.width,
+                    tile.height
+                )
+            end
+        end
+    end
 
     -- Post processing
     local vignette = Shine.vignette()

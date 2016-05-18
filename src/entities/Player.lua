@@ -25,8 +25,14 @@ local Player = Class {
             dx   = 0,    -- Direction on the X-axis
         }
         
+        -- Collision information
+        self.hitbox          = { w = 128, h = 128 }
+        self.checkCollisions = true
+        self.isSolid         = true
+
         -- Stats and attributes
-        self.hp = 100
+        self.isPlayer = true
+        self.hp       = 100
         
         -- Sprite dimensions
         self.sW = 128

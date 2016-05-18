@@ -27,11 +27,6 @@ function PlatformingSystem:process(e, dt)
     if e.behaviour.state == "willJump" then
         e.vel.y = -plt.hJ
     end
-
-    -- @TODO: needs to be in bump world
-    e.vel.y = e.vel.y + e.g * dt
-    e.pos.x = e.pos.x + e.vel.x * dt
-    e.pos.y = e.pos.y + e.vel.y * dt
 end
 
 PlatformingSystem.filter = Tiny.requireAll(

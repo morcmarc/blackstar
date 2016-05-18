@@ -28,7 +28,14 @@ return {
       properties = {},
       terrains = {},
       tilecount = 1,
-      tiles = {}
+      tiles = {
+        {
+          id = 0,
+          properties = {
+            ["collidable"] = "true"
+          }
+        }
+      }
     },
     {
       name = "swamp2",
@@ -62,7 +69,9 @@ return {
       opacity = 1,
       offsetx = 0,
       offsety = 0,
-      properties = {},
+      properties = {
+        ["collidable"] = "true"
+      },
       encoding = "base64",
       compression = "gzip",
       data = "H4sIAAAAAAAAA2NkYGBgJAIzEYkBB9bSLlAAAAA="
