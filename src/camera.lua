@@ -5,7 +5,7 @@ local Event  = require "vendor.knife.knife.event"
 local Cam = Class {
     init = function(self, player)
         self.player = player
-        self.c      = Camera(player.pos.x, player.pos.y - love.graphics.getHeight() / 2 + 256)
+        self.c      = Camera(player.pos.x, player.pos.y - player.sH)
     end,
 }
 
@@ -17,7 +17,7 @@ function Cam:update(dt)
     -- e.g.: lerp smoothing, physics smoothing, zoom-to-fit etc
     self.c:lockPosition(
         self.player.pos.x + love.graphics.getWidth() * 0.17 * dirCoeff,
-        self.player.pos.y - love.graphics.getHeight() / 2 + 256,
+        self.player.pos.y - self.player.sH,
         Camera.smooth.damped(2.5))
 end
 

@@ -3,6 +3,7 @@ local Level    = require "src.level"
 local Controls = require "src.controls.IngameControls"
 local Camera   = require "src.camera"
 local HUD      = require "src.hud"
+local BumpDebug= require "src.debug"
 local Shine    = require "vendor.shine"
 local Tiny     = require "vendor.tiny-ecs.tiny"
 local Bump     = require "vendor.bump.bump"
@@ -18,9 +19,7 @@ function Ingame:init()
         require ("src.systems.UpdateSystem")())
     
     -- Entities / components
-    self.player   = Player(
-        love.graphics.getWidth() / 2 - 150,
-        0)
+    self.player   = Player(0,0)
     self.level    = Level()
     self.controls = Controls()
     self.camera   = Camera(self.player)
@@ -65,6 +64,13 @@ function Ingame:draw()
             self.level:draw()
             -- Draw player
             self.player:draw()
+
+            if Blackstar._DEBUG_MODE then
+                love.graphics.push()
+                    love.graphics.translate(0, -self.player.sH / 2)
+                    BumpDebug.draw(self.bumpWorld)
+                love.graphics.pop()
+            end
         self.camera:detach()
     end)
 

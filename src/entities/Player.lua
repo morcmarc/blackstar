@@ -26,7 +26,7 @@ local Player = Class {
         }
         
         -- Collision information
-        self.hitbox          = { w = 128, h = 128 }
+        self.hitbox          = { w = 32, h = 128 }
         self.checkCollisions = true
         self.isSolid         = true
 
