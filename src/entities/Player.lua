@@ -4,52 +4,64 @@ local Behaviour = require "vendor.knife.knife.behavior"
 local Class     = require "vendor.hump.class"
 
 local jumpTimer = 0.18
-local velocity  = { x = 300, y = 3 }
 
 local Player = Class {
     init = function(self, x, y)
-        -- Player coords
-        self.x  = x
-        self.y  = y
-        self.dx = 0
-
+        -- Position components
+        self.pos = { x = x, y = y }
+        
+        -- Velocity components
+        self.vel = { x = 0, y = 0 }
+        
+        -- Gravity
+        self.g = 1300
+        
+        -- Platforming properties
+        self.platforming = {
+            a    = 1000, -- Acceleration
+            vMax = 300,  -- Max speed
+            hJ   = 380,  -- Jump height
+            mu   = 2000, -- Friction coefficient
+            dx   = 0,    -- Direction on the X-axis
+        }
+        
         -- Stats and attributes
         self.hp = 100
-
-        -- Sprite frame size
+        
+        -- Sprite dimensions
         self.sW = 128
         self.sH = 128
-
+        
         -- New sprite for holding animation states
         self.sprites = Sodapop.newAnimatedSprite(self.sW, self.sH)
 
         -- Idle animation
         self.sprites:addAnimation("idle", {
-            image       = love.graphics.newImage("assets/sprites/hero_stand.png"),
+            image       = love.graphics.newImage("assets/sprites/hero_2_idle.png"),
             frameWidth  = self.sW,
             frameHeight = self.sH,
             frames      = {
-                {1, 1, 3, 1, .30}
+                {1, 1, 4, 1, .15}
             },
         })
         
         -- Walk cycle
         self.sprites:addAnimation("walk", {
-            image       = love.graphics.newImage("assets/sprites/hero_walk.png"),
+            image       = love.graphics.newImage("assets/sprites/hero_2_idle.png"),
             frameWidth  = self.sW,
             frameHeight = self.sH,
             frames      = {
-                {1, 1, 4, 1, .06}
+                {1, 1, 4, 1, .15}
             },
         })
 
         -- Jump cycle
         self.sprites:addAnimation("jump", {
-            image       = love.graphics.newImage("assets/sprites/hero_walk.png"),
+            image       = love.graphics.newImage("assets/sprites/hero_2_idle.png"),
             frameWidth  = self.sW,
             frameHeight = self.sH,
             frames      = {
-                {1, 1, 4, 1, .18}
+                {1, 1, 4, 1, .15}
             },
         })
 
@@ -57,9 +69,10 @@ local Player = Class {
         self.behaviour = Behaviour({
             default = {
                 { 
-                    duration      = 1.0, 
+                    duration      = 0.6, 
                     action        = function() self:goIdle() end,
                     interruptable = true,
+                    moving        = false,
                 },
             },
             walking = {
@@ -67,6 +80,7 @@ local Player = Class {
                     duration      = 1.0,
                     action        = function() self:startWalk() end,
                     interruptable = true,
+                    moving        = true,
                 },
             },
             willJump = {
@@ -75,6 +89,7 @@ local Player = Class {
                     after         = "jumping", 
                     action        = function() self:willJump() end,
                     interruptable = false,
+                    moving        = true,
                 },
             },
             jumping = {
@@ -83,6 +98,7 @@ local Player = Class {
                     after         = "didJump",
                     action        = function() self:startJump() end,
                     interruptable = false,
+                    moving        = true,
                 },
             },
             didJump = {
@@ -91,6 +107,7 @@ local Player = Class {
                     after         = "default",
                     action        = function() self:didJump() end,
                     interruptable = false,
+                    moving        = false,
                 },
             },
         })
@@ -102,7 +119,7 @@ local Player = Class {
 
 function Player:draw()
     love.graphics.push()
-        love.graphics.translate(self.x - self.sW, self.y - self.sH + 7)
+        love.graphics.translate(self.pos.x - self.sW, self.pos.y - self.sH + 7)
         self.sprites:draw()
     love.graphics.pop()
 end
@@ -114,25 +131,8 @@ function Player:update(dt)
     -- @TODO: remove this, only here for testing
     self.hp = self.hp - dt * 1
 
-    -- @TODO: clean up
-    if self.behaviour.state == "jumping" then
-        jumpTimer = jumpTimer - dt
-        if jumpTimer > 0 then
-            self.y = self.y - velocity.y
-        end
-        if jumpTimer < 0 and jumpTimer > -0.16 then
-            self.y = self.y + velocity.y
-        end
-        if self.sprites.flipX then
-            self.x = self.x + -1 * 15
-        else
-            self.x = self.x + 15
-        end
-    end
-
     if self.behaviour.state == "walking" then
-        self.x = self.x + self.dx * velocity.x
-        self.sprites.flipX = (self.dx < 0)
+        self.sprites.flipX = (self.platforming.dx < 0)
     end
 end
 
@@ -145,7 +145,6 @@ function Player:goIdle()
 end
 
 function Player:willJump()
-    if Blackstar._DEBUG_MODE then print("-- willJump : ()") end
     jumpTimer = 0.18
 end
 
@@ -154,11 +153,10 @@ function Player:startJump()
 end
 
 function Player:didJump()
-    if Blackstar._DEBUG_MODE then print("-- didJump  : ()") end
 end
 
 function Player:move(dx)
-    self.dx = dx
+    self.platforming.dx = dx
 
     -- Cannot walk while doing something "important", like jumping
     if self.behaviour.frame.interruptable == false then
@@ -166,7 +164,7 @@ function Player:move(dx)
     end
 
     -- Standing? Go idle
-    if self.dx == 0 then
+    if self.platforming.dx == 0 then
         if self.behaviour.state ~= "default" then
             self.behaviour:setState("default")
         end

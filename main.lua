@@ -29,8 +29,7 @@ Blackstar = {
 }
 
 local Gamestate = require "vendor.hump.gamestate"
-local MainMenu  = require "src.mainmenu"
-local Game      = require "src.game"
+local MainMenu  = require "src.states.MainMenu"
 
 function love.load()
     Gamestate.registerEvents()

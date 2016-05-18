@@ -14,10 +14,15 @@ LÖVE (the software) is licensed under the terms of the ZLIB license.
 
 ### Open-source libraries
 
-- [LightWorld](https://github.com/tanema/light_world.lua) (MIT)
-- [Shine](https://github.com/vrld/shine) (MIT)
-- [Sodapop](https://github.com/tesselode/sodapop) (MIT)
-- [Simple Tiled Implementation](https://github.com/karai17/Simple-Tiled-Implementation) (MIT) 
-- [Tactile](https://github.com/tesselode/tactile) (MIT)
-- [Knife](https://github.com/airstruck/knife) (MIT)
-- [Hump](https://github.com/vrld/hump) (MIT)
+*(In alphabetical order)*
+
+- [airstruck/knife](https://github.com/airstruck/knife) (MIT)
+- [bakpakin/tiny-ecs](https://github.com/bakpakin/tiny-ecs) (MIT)
+- [karai17/Simple-Tiled-Implementation](https://github.com/karai17/Simple-Tiled-Implementation) (MIT) 
+- [kikito/bump.lua](https://github.com/kikito/bump.lua) (MIT)
+- [kikito/love-loader](https://github.com/kikito/love-loader) (MIT)
+- [tanema/light_world.lua](https://github.com/tanema/light_world.lua) (MIT)
+- [tesselode/sodapop](https://github.com/tesselode/sodapop) (MIT)
+- [tesselode/tactile](https://github.com/tesselode/tactile) (MIT)
+- [vrld/hump](https://github.com/vrld/hump) (MIT)
+- [vrld/shine](https://github.com/vrld/shine) (MIT)

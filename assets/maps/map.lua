@@ -5,22 +5,41 @@ return {
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 10,
-  height = 1,
-  tilewidth = 64,
-  tileheight = 64,
+  height = 2,
+  tilewidth = 32,
+  tileheight = 32,
   nextobjectid = 1,
   properties = {},
   tilesets = {
     {
       name = "swamp1",
       firstgid = 1,
-      tilewidth = 64,
-      tileheight = 64,
+      tilewidth = 32,
+      tileheight = 32,
       spacing = 0,
       margin = 0,
-      image = "../sprites/swamp1.png",
-      imagewidth = 64,
-      imageheight = 64,
+      image = "swamp1.png",
+      imagewidth = 32,
+      imageheight = 32,
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      properties = {},
+      terrains = {},
+      tilecount = 1,
+      tiles = {}
+    },
+    {
+      name = "swamp2",
+      firstgid = 2,
+      tilewidth = 32,
+      tileheight = 32,
+      spacing = 0,
+      margin = 0,
+      image = "swamp2.png",
+      imagewidth = 32,
+      imageheight = 32,
       tileoffset = {
         x = 0,
         y = 0
@@ -38,7 +57,7 @@ return {
       x = 0,
       y = 0,
       width = 10,
-      height = 1,
+      height = 2,
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -46,7 +65,7 @@ return {
       properties = {},
       encoding = "base64",
       compression = "gzip",
-      data = "H4sIAAAAAAAAA2NkYGBgJAIDALBnLoYoAAAA"
+      data = "H4sIAAAAAAAAA2NkYGBgJAIzEYkBB9bSLlAAAAA="
     }
   }
 }

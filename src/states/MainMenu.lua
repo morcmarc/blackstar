@@ -1,4 +1,4 @@
-local Controls  = require "src.menucontrols"
+local Controls = require "src.controls.MenuControls"
 
 local MainMenu = {}
 

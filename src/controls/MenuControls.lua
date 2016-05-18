@@ -1,7 +1,7 @@
 local Tactile   = require "vendor.tactile.tactile"
 local Class     = require "vendor.hump.class"
 local Gamestate = require "vendor.hump.gamestate"
-local Game      = require "src.game"
+local Ingame    = require "src.states.Ingame"
 
 local MenuControls = Class {
     init = function(self)
@@ -21,7 +21,7 @@ function MenuControls:update(dt)
     self.bindings.enter:update()
 
     if self.bindings.enter:isDown() then
-        Gamestate.switch(Game)
+        Gamestate.switch(Ingame)
         return
     end
 end
