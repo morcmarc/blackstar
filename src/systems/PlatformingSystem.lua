@@ -6,8 +6,7 @@ local PlatformingSystem = Tiny.processingSystem(Class{})
 function PlatformingSystem:process(e, dt)
     local plt = e.platforming
 
-    -- @TODO: need to remove plt.isMoving
-    if e.behaviour.frame.moving then
+    if plt.isMoving then
         if plt.dx < 0 then
             e.vel.x = math.max(
                 -plt.vMax, 

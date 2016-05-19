@@ -27,6 +27,7 @@ local Player = Class {
             dx   = 0,    -- Movement indicator (1: right, -1: left, 0: standing)
 
             onGround = true,
+            isMoving = false,
         }
         
         -- Collision information
@@ -84,7 +85,7 @@ local Player = Class {
                     duration      = 0.6, 
                     action        = function() self:goIdle() end,
                     interruptable = true,
-                    moving        = false,
+                    canMove       = true,
                 },
             },
             walking = {
@@ -92,7 +93,7 @@ local Player = Class {
                     duration      = 1.0,
                     action        = function() self:startWalk() end,
                     interruptable = true,
-                    moving        = true,
+                    canMove       = true,
                 },
             },
             willJump = {
@@ -101,7 +102,7 @@ local Player = Class {
                     after         = "jumping", 
                     action        = function() self:willJump() end,
                     interruptable = false,
-                    moving        = true,
+                    canMove       = true,
                 },
             },
             jumping = {
@@ -110,7 +111,7 @@ local Player = Class {
                     after         = "didJump",
                     action        = function() self:startJump() end,
                     interruptable = false,
-                    moving        = true,
+                    canMove       = false,
                 },
             },
             didJump = {
@@ -119,14 +120,25 @@ local Player = Class {
                     after         = "default",
                     action        = function() self:didJump() end,
                     interruptable = false,
-                    moving        = true,
+                    canMove       = false,
                 },
             },
             hit = {
                 {
-                    duration      = 2.0,
+                    duration      = 0.3,
                     after         = "default",
-                    moving        = true,
+                    action        = function() self:wasHit() end,
+                    canMove       = false,
+                    interruptable = false,
+                    invincible    = true,
+                }
+            },
+            afterHit = {
+                {
+                    duration      = 1.7,
+                    after         = "default",
+                    action        = function() self:afterHit() end,
+                    canMove       = true,
                     interruptable = true,
                     invincible    = true,
                 }
@@ -177,21 +189,32 @@ end
 
 function Player:startWalk()
     self.sprites:switch("walk")
+    self.platforming.isMoving = true
 end
 
 function Player:goIdle()
     self.sprites:switch("idle")
+    self.platforming.isMoving = false
+end
+
+function Player:wasHit()
+end
+
+function Player:afterHit()
 end
 
 function Player:willJump()
     jumpTimer = 0.18
+    self.platforming.isMoving = false
 end
 
 function Player:startJump()
     self.sprites:switch("jump")
+    self.platforming.isMoving = true
 end
 
 function Player:didJump()
+    self.platforming.isMoving = false
 end
 
 function Player:move(dx)

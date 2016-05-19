@@ -23,6 +23,7 @@ local Theosophist = Class {
             dx   = 1,    -- Movement indicator (1: right, -1: left, 0: standing)
 
             onGround = true,
+            isMoving = true,
         }
         
         -- Collision information
@@ -46,7 +47,7 @@ local Theosophist = Class {
         self.behaviour = Behaviour({
             default = {
                 {
-                    moving = true,
+                    
                 },
             },
         })
