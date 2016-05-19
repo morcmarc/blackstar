@@ -23,6 +23,8 @@ local Player = Class {
             hJ   = 380,  -- Jump height
             mu   = 2000, -- Friction coefficient
             dx   = 0,    -- Movement indicator (1: right, -1: left, 0: standing)
+
+            onGround = true,
         }
         
         -- Collision information
@@ -113,7 +115,7 @@ local Player = Class {
                     after         = "default",
                     action        = function() self:didJump() end,
                     interruptable = false,
-                    moving        = false,
+                    moving        = true,
                 },
             },
         })
@@ -190,7 +192,7 @@ end
 
 function Player:jump()
     -- Cannot jump while doing something uninterruptable
-    if self.behaviour.frame.interruptable == false then
+    if not self.behaviour.frame.interruptable or not self.platforming.onGround then
         return
     end
     self.behaviour:setState("willJump")

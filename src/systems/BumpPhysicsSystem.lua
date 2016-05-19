@@ -39,7 +39,7 @@ function BumpPhysicsSystem:process(e, dt)
             if col.normal.x == 0 then
                 vel.y = 0
                 if col.normal.y < 0 then
-                    e.grounded = true
+                    e.platforming.onGround = true
                 end
             else
                 vel.x = 0
