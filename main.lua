@@ -29,9 +29,14 @@ Blackstar = {
 }
 
 local Gamestate = require "vendor.hump.gamestate"
+local Event     = require "vendor.knife.knife.event"
 local MainMenu  = require "src.states.MainMenu"
 
 function love.load()
     Gamestate.registerEvents()
+
+    Event.on("pause", function() Gamestate.switch(MainMenu) end)
+
+    -- @TODO: use push and pop instead of switch wherever it makes sense
     Gamestate.switch(MainMenu)
 end

@@ -18,10 +18,6 @@ local MenuControls = Class {
 }
 
 function MenuControls:update(dt)
-    if love.keyboard.isDown("escape") then
-        love.event.quit()
-    end
-
     self.bindings.enter:update()
     self.bindings.vertical:update()
 

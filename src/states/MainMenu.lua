@@ -9,6 +9,7 @@ local MainMenu = {}
 function MainMenu:init()
     self.controls = Controls()
     self.menu     = Menu()
+    self.bgMusic  = love.audio.newSource("assets/audio/macabre.mp3")
     
     -- @TODO: write proper event handlers
     Event.on("menu:move",  function(dy) self:move(dy) end)
@@ -29,6 +30,7 @@ end
 
 function MainMenu:enterPressed()
     -- @TODO: this shouldn't be here
+    -- @TODO: use push and pop instead of switch wherever it makes sense
     if self.menu.current == 1 then
         Gamestate.switch(Ingame)
     end
@@ -44,6 +46,14 @@ end
 function MainMenu:update(dt)
     self.controls:update(dt)
     self.menu:update(dt)
+end
+
+function MainMenu:enter()
+    self.bgMusic:play()
+end
+
+function MainMenu:leave()
+    self.bgMusic:pause()
 end
 
 return MainMenu

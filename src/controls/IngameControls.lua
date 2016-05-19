@@ -1,6 +1,6 @@
-local Tactile = require "vendor.tactile.tactile"
-local Event   = require "vendor.knife.knife.event"
-local Class   = require "vendor.hump.class"
+local Tactile   = require "vendor.tactile.tactile"
+local Event     = require "vendor.knife.knife.event"
+local Class     = require "vendor.hump.class"
 
 local IngameControls = Class {
     init = function(self, camera, player)
@@ -18,8 +18,8 @@ local IngameControls = Class {
 }
 
 function IngameControls:update(dt)
-    if love.keyboard.isDown("escape") then
-        love.event.quit()
+    if love.keyboard.isDown("escape") or love.keyboard.isDown("p") then
+        Event.dispatch("pause")
     end
 
     self.bindings.horizontal:update()

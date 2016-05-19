@@ -4,10 +4,11 @@ local Class = require "vendor.hump.class"
 
 local Level = Class {
     init = function(self, bumpWorld)
-        self.bumpWorld = bumpWorld
-        self.map       = STI.new("assets/maps/map.lua")
-        self.x         =   0
-        self.y         = -64
+        self.bumpWorld        = bumpWorld
+        self.map              = STI.new("assets/maps/map.lua")
+        self.x                =   0
+        self.y                = -64
+        self.bgMusic          = love.audio.newSource("assets/audio/ambience.mp3")
 
         -- Add tiles and objects to Bump World
         for lindex, layer in ipairs(self.map.layers) do
@@ -24,6 +25,8 @@ local Level = Class {
                 end
             end
         end
+
+        self.bgMusic:play()
     end,
 }
 
@@ -36,6 +39,12 @@ function Level:draw()
         love.graphics.translate(self.x, self.y)
         self.map:draw()
     love.graphics.pop()
+end
+
+function Level:toggleMusic(state)
+    if state == "play" then self.bgMusic:play() end
+    if state == "pause" then self.bgMusic:pause() end
+    if state == "resume" then self.bgMusic:resume() end
 end
 
 return Level

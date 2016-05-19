@@ -1,15 +1,14 @@
-local Player   = require "src.entities.Player"
-local Camera   = require "src.entities.Camera"
-local Fireflies= require "src.entities.Fireflies"
-local HUD      = require "src.entities.Hud"
-local Debug    = require "src.entities.Debug"
-local Level    = require "src.entities.Level"
-local Cursor   = require "src.entities.Cursor"
-local Controls = require "src.controls.IngameControls"
-local Shine    = require "vendor.shine"
-local Tiny     = require "vendor.tiny-ecs.tiny"
-local Bump     = require "vendor.bump.bump"
-local Event    = require "vendor.knife.knife.event"
+local Player    = require "src.entities.Player"
+local Camera    = require "src.entities.Camera"
+local Fireflies = require "src.entities.Fireflies"
+local HUD       = require "src.entities.Hud"
+local Debug     = require "src.entities.Debug"
+local Level     = require "src.entities.Level"
+local Cursor    = require "src.entities.Cursor"
+local Controls  = require "src.controls.IngameControls"
+local Shine     = require "vendor.shine"
+local Tiny      = require "vendor.tiny-ecs.tiny"
+local Bump      = require "vendor.bump.bump"
 
 local Ingame = {}
 
@@ -68,6 +67,18 @@ end
 
 function Ingame:update(dt)
     self.world:update(dt)
+end
+
+function Ingame:enter()
+    self.level:toggleMusic("play")
+end
+
+function Ingame:leave()
+    self.level:toggleMusic("pause")
+end
+
+function Ingame:resume()
+    self.level:toggleMusic("resume")
 end
 
 return Ingame
