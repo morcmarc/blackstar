@@ -5,6 +5,7 @@ local HUD       = require "src.entities.Hud"
 local Debug     = require "src.entities.Debug"
 local Level     = require "src.entities.Level"
 local Cursor    = require "src.entities.Cursor"
+local Theosophist = require "src.entities.Theosophist"
 local Controls  = require "src.controls.IngameControls"
 local Shine     = require "vendor.shine"
 local Tiny      = require "vendor.tiny-ecs.tiny"
@@ -13,22 +14,28 @@ local Bump      = require "vendor.bump.bump"
 local Ingame = {}
 
 function Ingame:init()
+    -- @TODO: implement "enter", "leave" etc gamestate handlers
+
     -- Set up World
     self.bumpWorld = Bump.newWorld(32)
-    self.world  = Tiny.world(
-        require ("src.systems.PlatformingSystem")(),
-        require ("src.systems.BumpPhysicsSystem")(self.bumpWorld),
-        require ("src.systems.UpdateSystem")())
     
-    -- Entities / components
+    -- Entities
     self.player   = Player(0,0)
     self.level    = Level(self.bumpWorld)
     self.camera   = Camera(self.player)
     self.fireflies= Fireflies("assets/sprites/firefly.png", 10, -1)
+    self.theosophist = Theosophist(200,0)
     self.controls = Controls(self.camera.c, self.player)
     self.cursor   = Cursor()
     self.hud      = HUD(self.player)
     self.debug    = Debug(self.bumpWorld, self.player, self.camera)
+
+    -- Initialise engine
+    self.world  = Tiny.world(
+        require ("src.systems.PlatformingSystem")(),
+        require ("src.systems.BumpPhysicsSystem")(self.bumpWorld),
+        require ("src.systems.UpdateSystem")(),
+        require ("src.systems.DumbAISystem")(self.player))
 
     -- Compose world
     self.world:add(self.player)
@@ -37,6 +44,7 @@ function Ingame:init()
     self.world:add(self.camera)
     self.world:add(self.cursor)
     self.world:add(self.fireflies)
+    self.world:add(self.theosophist)
     self.world:add(self.hud)
 
     -- Post processing
@@ -53,6 +61,7 @@ function Ingame:draw()
         self.camera:attach()
             self.level:draw()
             self.fireflies:draw()
+            self.theosophist:draw()
             self.player:draw()
         self.camera:detach()
     end)

@@ -7,6 +7,8 @@ local jumpTimer = 0.18
 
 local Player = Class {
     init = function(self, x, y)
+        self.name = "John Raymond Legrasse"
+
         -- Position components
         self.pos = { x = x, y = y }
         
@@ -34,7 +36,9 @@ local Player = Class {
 
         -- Stats and attributes
         self.isPlayer = true
+        self.isAlive  = true
         self.hp       = 100
+        self.maxHp    = 100
         
         -- Sprite dimensions
         self.sW = 128
@@ -118,6 +122,15 @@ local Player = Class {
                     moving        = true,
                 },
             },
+            hit = {
+                {
+                    duration      = 2.0,
+                    after         = "default",
+                    moving        = true,
+                    interruptable = true,
+                    invincible    = true,
+                }
+            },
         })
 
         Event.on("player:move", function(dx) self:move(dx) end)
@@ -137,13 +150,29 @@ end
 function Player:update(dt)
     self.sprites:update(dt)
     self.behaviour:update(dt)
+end
 
-    -- @TODO: remove this, only here for testing
-    self.hp = self.hp - dt * 1
+function Player:onHit()
+    if self.behaviour.frame.invincible then
+        return
+    end
 
-    -- if self.behaviour.state == "walking" then
-    --     self.sprites.flipX = (self.platforming.dx < 0)
-    -- end
+    self.hp = self.hp - 25
+
+    if self.hp > 1 then
+        self.behaviour:setState("hit")
+        return
+    end
+
+    if self.hp < 1 then
+        love.event.quit()
+    end
+end
+
+function Player:onCollision(col)
+    if self.isAlive and col.other.isEnemy and col.other.isAlive then
+        self:onHit()
+    end
 end
 
 function Player:startWalk()
@@ -171,6 +200,10 @@ function Player:move(dx)
 
     -- Cannot walk while doing something "important", like jumping
     if self.behaviour.frame.interruptable == false then
+        return
+    end
+
+    if self.behaviour.state == "hit" then
         return
     end
 

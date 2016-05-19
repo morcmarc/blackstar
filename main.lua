@@ -1,5 +1,5 @@
 Blackstar = {
-    _DEBUG_MODE = false,
+    _DEBUG_MODE = true,
     _VERSION = "Blackstar v1.0.0",
     _DESCRIPTION = "Lovecraftian adventure-action game.",
     _URL = "https://github.com/morcmarc/blackstar",

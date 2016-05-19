@@ -8,9 +8,9 @@ local BumpPhysicsSystem = Tiny.processingSystem(Class{
 })
 
 local function collisionFilter(e1, e2)
-    if e1.isSolid then
-        return "slide"
-    end
+    if e1.isPlayer and e2.isEnemy then return "cross" end
+    if e1.isEnemy and e2.isPlayer then return "cross" end
+    if e1.isSolid then return "slide" end
 
     return nil
 end
