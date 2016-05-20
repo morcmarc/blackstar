@@ -1,15 +1,15 @@
-local Player    = require "src.entities.Player"
-local Camera    = require "src.entities.Camera"
-local Fireflies = require "src.entities.Fireflies"
-local HUD       = require "src.entities.Hud"
-local Debug     = require "src.entities.Debug"
-local Level     = require "src.entities.Level"
-local Cursor    = require "src.entities.Cursor"
+local Player      = require "src.entities.Player"
+local Camera      = require "src.entities.Camera"
+local Fireflies   = require "src.entities.Fireflies"
+local HUD         = require "src.entities.Hud"
+local Debug       = require "src.entities.Debug"
+local Level       = require "src.entities.Level"
+local Cursor      = require "src.entities.Cursor"
 local Theosophist = require "src.entities.Theosophist"
-local Controls  = require "src.controls.IngameControls"
-local Shine     = require "vendor.shine"
-local Tiny      = require "vendor.tiny-ecs.tiny"
-local Bump      = require "vendor.bump.bump"
+local Controls    = require "src.controls.IngameControls"
+local Shine       = require "vendor.shine"
+local Tiny        = require "vendor.tiny-ecs.tiny"
+local Bump        = require "vendor.bump.bump"
 
 local Ingame = {}
 
@@ -20,22 +20,23 @@ function Ingame:init()
     self.bumpWorld = Bump.newWorld(32)
     
     -- Entities
-    self.player   = Player(0,0)
-    self.level    = Level(self.bumpWorld)
-    self.camera   = Camera(self.player)
-    self.fireflies= Fireflies("assets/sprites/firefly.png", 10, -1)
+    self.player      = Player(0,0)
+    self.level       = Level(self.bumpWorld)
+    self.camera      = Camera(self.player)
+    self.fireflies   = Fireflies("assets/sprites/firefly.png", 10, -1)
     self.theosophist = Theosophist(200,0)
-    self.controls = Controls(self.camera.c, self.player)
-    self.cursor   = Cursor()
-    self.hud      = HUD(self.player)
-    self.debug    = Debug(self.bumpWorld, self.player, self.camera)
+    self.controls    = Controls(self.camera.c, self.player)
+    self.cursor      = Cursor()
+    self.hud         = HUD(self.player)
+    self.debug       = Debug(self.bumpWorld, self.player, self.camera)
 
     -- Initialise engine
     self.world  = Tiny.world(
         require ("src.systems.PlatformingSystem")(),
         require ("src.systems.BumpPhysicsSystem")(self.bumpWorld),
         require ("src.systems.UpdateSystem")(),
-        require ("src.systems.DumbAISystem")(self.player))
+        require ("src.systems.DumbAISystem")(self.player),
+        require ("src.systems.DamageSystem")())
 
     -- Compose world
     self.world:add(self.player)

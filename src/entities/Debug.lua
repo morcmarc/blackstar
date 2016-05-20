@@ -46,7 +46,7 @@ function Debug:draw()
 
     local mx, my = love.mouse.getPosition()
     local px, py = self.camera.c:cameraCoords(
-        self.player.pos.x + self.player.hitbox.w / 2,
+        self.player.pos.x + self.player.collision.hitbox.w / 2,
         self.player.pos.y)
     love.graphics.setColor(255, 0, 0)
     love.graphics.line(px, py, mx, my)

@@ -2,49 +2,48 @@ local Sodapop   = require "vendor.sodapop.sodapop"
 local Event     = require "vendor.knife.knife.event"
 local Behaviour = require "vendor.knife.knife.behavior"
 local Class     = require "vendor.hump.class"
-local FloatingDamage = require "src.entities.FloatingDamage"
-
-local jumpTimer = 0.18
 
 local Player = Class {
     init = function(self, x, y)
         self.name = "John Raymond Legrasse"
 
-        -- Position components
+        -- Position component
         self.pos = { x = x, y = y }
         
-        -- Velocity components
+        -- Velocity component
         self.vel = { x = 0, y = 0 }
         
-        -- Gravity
-        self.g = 1300
-        
-        -- Platforming properties
+        -- Platforming component
         self.platforming = {
             a    = 1000, -- Acceleration
             vMax = 300,  -- Max speed
             hJ   = 380,  -- Jump height
             mu   = 2000, -- Friction coefficient
             dx   = 0,    -- Movement indicator (1: right, -1: left, 0: standing)
+            g    = 1300, -- Gravity
 
             onGround = true,
             isMoving = false,
         }
         
-        -- Collision information
-        self.hitbox          = { w = 32, h = 128 }
-        self.checkCollisions = true
-        self.isSolid         = true
+        -- Collision component
+        self.collision = {
+            hitbox          = { w = 32, h = 128 },
+            checkCollisions = true,
+            isSolid         = true,
+        }
+
+        -- Health component
+        self.health = {
+            max     = 100,
+            current = 100,
+        }
 
         -- Stats and attributes
         self.isPlayer = true
         self.isAlive  = true
-        self.hp       = 100
-        self.maxHp    = 100
-
-        -- Damage floaters
-        -- @TODO: this should be managed by some other class.
-        self.dmgFloaters = {}
+        -- self.hp       = 100
+        -- self.maxHp    = 100
         
         -- Sprite dimensions
         self.sW = 128
@@ -152,60 +151,21 @@ local Player = Class {
 
         Event.on("player:move", function(dx) self:move(dx) end)
         Event.on("player:jump", function(dt) self:jump() end)
-        Event.on("dmgFloater:remove", function(dmgFloater) self:removeDmgFloater(dmgFloater) end)
     end,
 }
 
 function Player:draw()
     love.graphics.push()
         love.graphics.translate(
-            self.pos.x - self.sW + self.hitbox.w / 2, 
+            self.pos.x - self.sW + self.collision.hitbox.w / 2, 
             self.pos.y - self.sH + 7)
         self.sprites:draw()
     love.graphics.pop()
-    for _, d in pairs(self.dmgFloaters) do
-        d:draw()
-    end
 end
 
 function Player:update(dt)
     self.sprites:update(dt)
     self.behaviour:update(dt)
-
-    for _, d in pairs(self.dmgFloaters) do
-        d:update(dt)
-    end
-end
-
-function Player:onHit()
-    -- @TODO: damage calculation and handling should be a "system" too.
-
-    if self.behaviour.frame.invincible then
-        return
-    end
-
-    self.hp = self.hp - 25
-
-    table.insert(self.dmgFloaters, FloatingDamage(self, 25))
-
-    if self.hp > 1 then
-        self.behaviour:setState("hit")
-        return
-    end
-
-    if self.hp < 1 then
-        love.event.quit()
-    end
-end
-
-function Player:removeDmgFloater(dmgFloater)
-    table.remove(self.dmgFloaters, 1)
-end
-
-function Player:onCollision(col)
-    if self.isAlive and col.other.isEnemy and col.other.isAlive then
-        self:onHit()
-    end
 end
 
 function Player:startWalk()
@@ -225,7 +185,6 @@ function Player:afterHit()
 end
 
 function Player:willJump()
-    jumpTimer = 0.18
     self.platforming.isMoving = false
 end
 

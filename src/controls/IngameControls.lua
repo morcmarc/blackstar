@@ -27,7 +27,7 @@ function IngameControls:update(dt)
 
     local mx, my = love.mouse.getPosition()
     local px, py = self.camera:cameraCoords(
-        self.player.pos.x + self.player.hitbox.w / 2,
+        self.player.pos.x + self.player.collision.hitbox.w / 2,
         self.player.pos.y)
     local angle = math.atan2(py-my, px-mx) * 180 / math.pi
     -- @TODO: should be an event

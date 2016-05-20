@@ -1,5 +1,6 @@
 local Class = require "vendor.hump.class"
 local Tiny  = require "vendor.tiny-ecs.tiny"
+local Event = require "vendor.knife.knife.event"
 
 local BumpPhysicsSystem = Tiny.processingSystem(Class{
     init = function(self, bumpWorld)
@@ -10,7 +11,7 @@ local BumpPhysicsSystem = Tiny.processingSystem(Class{
 local function collisionFilter(e1, e2)
     if e1.isPlayer and e2.isEnemy then return "cross" end
     if e1.isEnemy and e2.isPlayer then return "cross" end
-    if e1.isSolid then return "slide" end
+    if e1.collision.isSolid then return "slide" end
 
     return nil
 end
@@ -20,7 +21,7 @@ function BumpPhysicsSystem:process(e, dt)
     local vel = e.vel
 
     -- Apply gravity
-    local g = e.g or 0
+    local g = e.platforming.g or 0
     e.vel.y = vel.y + g * dt
     
     -- Check collision
@@ -46,20 +47,22 @@ function BumpPhysicsSystem:process(e, dt)
             end
         end
 
-        if e.onCollision and collided then
-            e:onCollision(col)
+        -- Hit
+        if collided then
+            Event.dispatch("collision:hit", { target = e, source = col.other })
+            -- e:onCollision(col)
         end
     end
 end
 
 function BumpPhysicsSystem:onAdd(e)
-    self.bumpWorld:add(e, e.pos.x, e.pos.y, e.hitbox.w, e.hitbox.h)
+    self.bumpWorld:add(e, e.pos.x, e.pos.y, e.collision.hitbox.w, e.collision.hitbox.h)
 end
 
 function BumpPhysicsSystem:onRemove(e)
     self.bumpWorld:remove(e)
 end
 
-BumpPhysicsSystem.filter = Tiny.requireAll("pos", "vel", "hitbox")
+BumpPhysicsSystem.filter = Tiny.requireAll("pos", "vel", "platforming", "collision")
 
 return BumpPhysicsSystem

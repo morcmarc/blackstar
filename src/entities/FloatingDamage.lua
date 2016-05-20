@@ -6,7 +6,7 @@ local FloatingDamage = Class {
         self.target = target
         self.damage = damage
         self.alpha  = 255
-        self.pos    = { x = target.pos.x, y = target.pos.y - target.sH * 0.75}
+        self.pos    = { x = target.pos.x, y = target.pos.y - target.sH * 0.75 }
     end,
 }
 

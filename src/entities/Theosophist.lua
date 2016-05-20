@@ -5,37 +5,43 @@ local Theosophist = Class {
     init = function(self, x, y)
         self.name = "Theosophist"
 
-        -- Position components
+        -- Position component
         self.pos = { x = x, y = y }
         
-        -- Velocity components
+        -- Velocity component
         self.vel = { x = 0, y = 0 }
         
-        -- Gravity
-        self.g = 1300
-        
-        -- Platforming properties
+        -- Platforming component
         self.platforming = {
             a    = 1000, -- Acceleration
             vMax = 160,  -- Max speed
             hJ   = 190,  -- Jump height
             mu   = 2000, -- Friction coefficient
             dx   = 1,    -- Movement indicator (1: right, -1: left, 0: standing)
+            g    = 1300, -- Gravity
 
             onGround = true,
             isMoving = true,
         }
         
-        -- Collision information
-        self.hitbox          = { w = 32, h = 32 }
-        self.checkCollisions = true
-        self.isSolid         = true
+        -- Collision component
+        self.collision = {
+            hitbox          = { w = 32, h = 32 },
+            checkCollisions = true,
+            isSolid         = true,
+        }
+
+        -- Health component
+        self.health = {
+            max     = 100,
+            current = 100,
+        }
 
         -- Stats and attributes
         self.isEnemy  = true
         self.isAlive  = true
-        self.hp       = 100
-        self.maxHp    = 100
+        -- self.hp       = 100
+        -- self.maxHp    = 100
         
         -- Is AI controlled?
         self.ai = true
@@ -55,9 +61,6 @@ local Theosophist = Class {
 }
 
 function Theosophist:update(dt)
-end
-
-function Theosophist:onCollision(col)
 end
 
 function Theosophist:draw()
