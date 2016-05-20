@@ -1,5 +1,5 @@
 Blackstar = {
-    _DEBUG_MODE = false,
+    _DEBUG_MODE = true,
     _VERSION = "Blackstar v1.0.0",
     _DESCRIPTION = "Lovecraftian adventure-action game.",
     _URL = "https://github.com/morcmarc/blackstar",
@@ -31,6 +31,7 @@ Blackstar = {
 local Gamestate = require "vendor.hump.gamestate"
 local Event     = require "vendor.knife.knife.event"
 local MainMenu  = require "src.states.MainMenu"
+local Ingame    = require "src.states.Ingame"
 
 function love.load()
     Gamestate.registerEvents()

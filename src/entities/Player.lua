@@ -2,6 +2,7 @@ local Sodapop   = require "vendor.sodapop.sodapop"
 local Event     = require "vendor.knife.knife.event"
 local Behaviour = require "vendor.knife.knife.behavior"
 local Class     = require "vendor.hump.class"
+local FloatingDamage = require "src.entities.FloatingDamage"
 
 local jumpTimer = 0.18
 
@@ -40,6 +41,10 @@ local Player = Class {
         self.isAlive  = true
         self.hp       = 100
         self.maxHp    = 100
+
+        -- Damage floaters
+        -- @TODO: this should be managed by some other class.
+        self.dmgFloaters = {}
         
         -- Sprite dimensions
         self.sW = 128
@@ -147,6 +152,7 @@ local Player = Class {
 
         Event.on("player:move", function(dx) self:move(dx) end)
         Event.on("player:jump", function(dt) self:jump() end)
+        Event.on("dmgFloater:remove", function(dmgFloater) self:removeDmgFloater(dmgFloater) end)
     end,
 }
 
@@ -157,19 +163,30 @@ function Player:draw()
             self.pos.y - self.sH + 7)
         self.sprites:draw()
     love.graphics.pop()
+    for _, d in pairs(self.dmgFloaters) do
+        d:draw()
+    end
 end
 
 function Player:update(dt)
     self.sprites:update(dt)
     self.behaviour:update(dt)
+
+    for _, d in pairs(self.dmgFloaters) do
+        d:update(dt)
+    end
 end
 
 function Player:onHit()
+    -- @TODO: damage calculation and handling should be a "system" too.
+
     if self.behaviour.frame.invincible then
         return
     end
 
     self.hp = self.hp - 25
+
+    table.insert(self.dmgFloaters, FloatingDamage(self, 25))
 
     if self.hp > 1 then
         self.behaviour:setState("hit")
@@ -179,6 +196,10 @@ function Player:onHit()
     if self.hp < 1 then
         love.event.quit()
     end
+end
+
+function Player:removeDmgFloater(dmgFloater)
+    table.remove(self.dmgFloaters, 1)
 end
 
 function Player:onCollision(col)
