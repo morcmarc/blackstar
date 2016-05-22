@@ -33,6 +33,7 @@ function PlayerControlSystem:process(e, dt)
 
     -- Jump
     if self.bindings.jump:isDown() and e.platforming.onGround then
+        e.sprites:switch("walk", true)
         e.platforming.onGround = false
         e.vel.y = -e.platforming.hJ
         return
@@ -41,6 +42,12 @@ function PlayerControlSystem:process(e, dt)
     -- Move
     e.platforming.dx = self.bindings.horizontal() * dt
     e.platforming.isMoving = e.platforming.dx ~= 0
+
+    if e.platforming.isMoving then
+        e.sprites:switch("walk", true)
+    else
+        e.sprites:switch("idle", true)
+    end
 end
 
 PlayerControlSystem.filter = Tiny.requireAll(

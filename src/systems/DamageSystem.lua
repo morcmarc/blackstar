@@ -10,7 +10,7 @@ local DamageSystem = Tiny.system(Class {
         -- Timer group
         self.timers = {}
         -- Queue up hits
-        Event.on("collision:hit", function(col) 
+        Event.on("attack:normal", function(col) 
             table.insert(self.hits, col)
         end)
     end   

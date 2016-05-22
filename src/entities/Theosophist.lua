@@ -44,6 +44,7 @@ local Theosophist = Class {
         -- AI component
         self.ai = {
             aggroRange = 200,
+            attackRange = 32,
         }
 
         -- Sprite dimensions
@@ -57,7 +58,13 @@ function Theosophist:draw()
         love.graphics.translate(
             self.pos.x, 
             self.pos.y - 64)
-        love.graphics.setColor(255,255,255)
+        if self.ai.isAttacking then
+            love.graphics.setColor(255,0,0)
+        elseif self.ai.isAggroing then
+            love.graphics.setColor(255,128,64)
+        else
+            love.graphics.setColor(255,255,255)
+        end
         love.graphics.rectangle("fill", 0, 0, self.sW, self.sH)
     love.graphics.pop()
 end

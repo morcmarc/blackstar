@@ -55,31 +55,31 @@ local Player = Class {
 
         -- Idle animation
         self.sprites:addAnimation("idle", {
-            image       = love.graphics.newImage("assets/sprites/hero_2_idle.png"),
+            image       = love.graphics.newImage("assets/sprites/hero_stand.png"),
             frameWidth  = self.sW,
             frameHeight = self.sH,
             frames      = {
-                {1, 1, 4, 1, .15}
+                {1, 1, 3, 1, .15}
             },
         })
         
         -- Walk cycle
         self.sprites:addAnimation("walk", {
-            image       = love.graphics.newImage("assets/sprites/hero_2_idle.png"),
+            image       = love.graphics.newImage("assets/sprites/hero_walk.png"),
             frameWidth  = self.sW,
             frameHeight = self.sH,
             frames      = {
-                {1, 1, 4, 1, .15}
+                {1, 1, 4, 1, .09}
             },
         })
 
         -- Jump cycle
         self.sprites:addAnimation("jump", {
-            image       = love.graphics.newImage("assets/sprites/hero_2_idle.png"),
+            image       = love.graphics.newImage("assets/sprites/hero_walk.png"),
             frameWidth  = self.sW,
             frameHeight = self.sH,
             frames      = {
-                {1, 1, 4, 1, .15}
+                {1, 1, 4, 1, .09}
             },
         })
     end,

@@ -55,7 +55,7 @@ function Ingame:init()
 end
 
 function Ingame:draw()
-    love.graphics.setBackgroundColor(48, 96, 128, 255)
+    love.graphics.setBackgroundColor(0, 0, 0, 255)
     love.graphics.clear()
 
     self.postEffect:draw(function()

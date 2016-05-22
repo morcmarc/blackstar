@@ -1,6 +1,5 @@
 local Class = require "vendor.hump.class"
 local Tiny  = require "vendor.tiny-ecs.tiny"
-local Event = require "vendor.knife.knife.event"
 
 local BumpPhysicsSystem = Tiny.processingSystem(Class{
     init = function(self, bumpWorld)
@@ -45,12 +44,6 @@ function BumpPhysicsSystem:process(e, dt)
             else
                 vel.x = 0
             end
-        end
-
-        -- Hit
-        if collided then
-            Event.dispatch("collision:hit", { target = e, source = col.other })
-            -- e:onCollision(col)
         end
     end
 end
