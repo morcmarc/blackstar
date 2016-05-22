@@ -16,9 +16,9 @@ function Cam:update(dt)
     -- @TODO: could play around with this a bit more to see what works best,
     -- e.g.: vertical platform-snapping, target-focus, jump-zooming
     self.c:lockPosition(
-        self.player.pos.x + love.graphics.getWidth() * 0.17 * dirCoeff,
+        self.player.pos.x + love.graphics.getWidth() * 0.17 * dirCoeff + self.player.vel.x,
         self.player.pos.y - self.player.sH / 2,
-        Camera.smooth.damped(3.5))
+        Camera.smooth.damped(1))
 end
 
 function Cam:attach()

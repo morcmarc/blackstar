@@ -2,6 +2,8 @@ local Class = require "vendor.hump.class"
 
 local Cursor = Class {
     init = function(self)
+        self.x = love.graphics.getWidth() / 2
+        self.y = love.graphics.getHeight() / 2
         -- Set up mouse
         love.mouse.setVisible(false)
         love.mouse.setGrabbed(true)
@@ -10,8 +12,7 @@ local Cursor = Class {
 }
 
 function Cursor:draw()
-    local mx, my = love.mouse.getPosition()
-    love.graphics.draw(self.cursorImg, mx, my)
+    -- love.graphics.draw(self.cursorImg, self.x, self.y)
 end
 
 return Cursor

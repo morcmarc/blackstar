@@ -37,7 +37,7 @@ function Ingame:init()
         require ("src.systems.DumbAISystem")(self.player),
         require ("src.systems.DamageSystem")(),
         require ("src.systems.SpriteSystem")(),
-        require ("src.systems.PlayerControlSystem")(self.camera.c))
+        require ("src.systems.PlayerControlSystem")(self.camera.c, self.cursor))
 
     -- Compose world
     self.world:add(self.player)

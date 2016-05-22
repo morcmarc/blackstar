@@ -19,9 +19,6 @@ local Player = Class {
             mu   = 2000, -- Friction coefficient
             dx   = 0,    -- Movement indicator (1: right, -1: left, 0: standing)
             g    = 1300, -- Gravity
-
-            onGround = true,
-            isMoving = false,
         }
 
         -- Player controls component
@@ -44,7 +41,6 @@ local Player = Class {
 
         -- Stats and attributes
         self.isPlayer = true
-        
         
         -- Sprite dimensions
         self.sW = 128
@@ -90,6 +86,11 @@ function Player:draw()
         love.graphics.translate(
             self.pos.x - self.sW + self.collision.hitbox.w / 2, 
             self.pos.y - self.sH + 7)
+        if self.isAttacking then
+            self.sprites.color = {0,0,255,255}
+        else
+            self.sprites.color = {255,255,255,255}
+        end
         self.sprites:draw()
     love.graphics.pop()
 end
