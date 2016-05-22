@@ -1,12 +1,15 @@
 local Class = require "vendor.hump.class"
 local Tiny  = require "vendor.tiny-ecs.tiny"
 local Event = require "vendor.knife.knife.event"
+local Timer = require "vendor.knife.knife.timer"
 
 local DamageSystem = Tiny.system(Class {
     init = function(self)
         -- List of hits to process 
         self.hits = {}
-
+        -- Timer group
+        self.timers = {}
+        -- Queue up hits
         Event.on("collision:hit", function(col) 
             table.insert(self.hits, col)
         end)
@@ -14,15 +17,26 @@ local DamageSystem = Tiny.system(Class {
 })
 
 function DamageSystem:update(dt)
-    for _, hit in pairs(self.hits) do
-        if hit.target.isAlive and hit.source.isAlive and hit.target.isPlayer then
-            if not hit.target.behaviour.frame.invincible then
-                hit.target.health.current = hit.target.health.current - 25
+    -- Progress damage timers
+    Timer.update(dt, self.timers)
 
-                if hit.target.health.current > 1 then
-                    hit.target.behaviour:setState("hit")
-                else
-                    love.event.quit()
+    for _, hit in pairs(self.hits) do
+        local t = hit.target.health
+        local s = hit.source.health
+
+        if t and s then
+            if t.isAlive and s.isAlive and hit.target.isPlayer then
+                if not t.isInvincible then
+                    -- @TODO: remove hard-coded damage
+                    t.current = t.current - 25
+
+                    if t.current > 1 then
+                        t.isInvincible = true
+                        local it = Timer.after(1, function() t.isInvincible = false end)
+                        it:group(self.timers)
+                    else
+                        love.event.quit()
+                    end
                 end
             end
         end

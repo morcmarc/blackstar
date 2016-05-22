@@ -23,17 +23,11 @@ function PlatformingSystem:process(e, dt)
             e.vel.x = math.min(0, e.vel.x + plt.mu * dt)
         end
     end
-
-    if e.behaviour.state == "willJump" then
-        plt.onGround = false
-        e.vel.y = -plt.hJ
-    end
 end
 
 PlatformingSystem.filter = Tiny.requireAll(
     "pos", 
     "vel", 
-    "platforming",
-    "behaviour")
+    "platforming")
 
 return PlatformingSystem

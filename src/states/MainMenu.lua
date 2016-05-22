@@ -49,7 +49,7 @@ function MainMenu:update(dt)
 end
 
 function MainMenu:enter()
-    self.bgMusic:play()
+    -- self.bgMusic:play()
 end
 
 function MainMenu:leave()

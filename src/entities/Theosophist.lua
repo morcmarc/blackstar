@@ -35,33 +35,22 @@ local Theosophist = Class {
         self.health = {
             max     = 100,
             current = 100,
+            isAlive = true,
         }
 
         -- Stats and attributes
         self.isEnemy  = true
-        self.isAlive  = true
-        -- self.hp       = 100
-        -- self.maxHp    = 100
         
-        -- Is AI controlled?
-        self.ai = true
+        -- AI component
+        self.ai = {
+            aggroRange = 200,
+        }
 
         -- Sprite dimensions
         self.sW = 32
         self.sH = 32
-
-        self.behaviour = Behaviour({
-            default = {
-                {
-                    
-                },
-            },
-        })
     end,
 }
-
-function Theosophist:update(dt)
-end
 
 function Theosophist:draw()
     love.graphics.push()

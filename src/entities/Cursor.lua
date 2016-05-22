@@ -9,9 +9,6 @@ local Cursor = Class {
     end,
 }
 
-function Cursor:update(dt)
-end
-
 function Cursor:draw()
     local mx, my = love.mouse.getPosition()
     love.graphics.draw(self.cursorImg, mx, my)

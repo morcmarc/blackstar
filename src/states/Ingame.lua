@@ -6,10 +6,10 @@ local Debug       = require "src.entities.Debug"
 local Level       = require "src.entities.Level"
 local Cursor      = require "src.entities.Cursor"
 local Theosophist = require "src.entities.Theosophist"
-local Controls    = require "src.controls.IngameControls"
 local Shine       = require "vendor.shine"
 local Tiny        = require "vendor.tiny-ecs.tiny"
 local Bump        = require "vendor.bump.bump"
+local Event       = require "vendor.knife.knife.event"
 
 local Ingame = {}
 
@@ -25,7 +25,6 @@ function Ingame:init()
     self.camera      = Camera(self.player)
     self.fireflies   = Fireflies("assets/sprites/firefly.png", 10, -1)
     self.theosophist = Theosophist(200,0)
-    self.controls    = Controls(self.camera.c, self.player)
     self.cursor      = Cursor()
     self.hud         = HUD(self.player)
     self.debug       = Debug(self.bumpWorld, self.player, self.camera)
@@ -36,12 +35,13 @@ function Ingame:init()
         require ("src.systems.BumpPhysicsSystem")(self.bumpWorld),
         require ("src.systems.UpdateSystem")(),
         require ("src.systems.DumbAISystem")(self.player),
-        require ("src.systems.DamageSystem")())
+        require ("src.systems.DamageSystem")(),
+        require ("src.systems.SpriteSystem")(),
+        require ("src.systems.PlayerControlSystem")(self.camera.c))
 
     -- Compose world
     self.world:add(self.player)
     self.world:add(self.level)
-    self.world:add(self.controls)
     self.world:add(self.camera)
     self.world:add(self.cursor)
     self.world:add(self.fireflies)
@@ -76,6 +76,10 @@ function Ingame:draw()
 end
 
 function Ingame:update(dt)
+    if love.keyboard.isDown("escape") or love.keyboard.isDown("p") then
+        Event.dispatch("pause")
+    end
+
     self.world:update(dt)
 end
 

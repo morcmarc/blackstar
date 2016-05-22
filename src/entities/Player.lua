@@ -1,6 +1,4 @@
 local Sodapop   = require "vendor.sodapop.sodapop"
-local Event     = require "vendor.knife.knife.event"
-local Behaviour = require "vendor.knife.knife.behavior"
 local Class     = require "vendor.hump.class"
 
 local Player = Class {
@@ -25,6 +23,9 @@ local Player = Class {
             onGround = true,
             isMoving = false,
         }
+
+        -- Player controls component
+        self.isPlayerControlled = true
         
         -- Collision component
         self.collision = {
@@ -35,15 +36,15 @@ local Player = Class {
 
         -- Health component
         self.health = {
-            max     = 100,
-            current = 100,
+            max          = 100,
+            current      = 100,
+            isInvincible = false,
+            isAlive      = true,
         }
 
         -- Stats and attributes
         self.isPlayer = true
-        self.isAlive  = true
-        -- self.hp       = 100
-        -- self.maxHp    = 100
+        
         
         -- Sprite dimensions
         self.sW = 128
@@ -81,76 +82,6 @@ local Player = Class {
                 {1, 1, 4, 1, .15}
             },
         })
-
-        -- Set up state machine
-        self.behaviour = Behaviour({
-            default = {
-                { 
-                    duration      = 0.6, 
-                    action        = function() self:goIdle() end,
-                    interruptable = true,
-                    canMove       = true,
-                },
-            },
-            walking = {
-                {
-                    duration      = 1.0,
-                    action        = function() self:startWalk() end,
-                    interruptable = true,
-                    canMove       = true,
-                },
-            },
-            willJump = {
-                { 
-                    duration      = 0.1, 
-                    after         = "jumping", 
-                    action        = function() self:willJump() end,
-                    interruptable = false,
-                    canMove       = true,
-                },
-            },
-            jumping = {
-                {
-                    duration      = 0.36,
-                    after         = "didJump",
-                    action        = function() self:startJump() end,
-                    interruptable = false,
-                    canMove       = false,
-                },
-            },
-            didJump = {
-                {
-                    duration      = 0.08,
-                    after         = "default",
-                    action        = function() self:didJump() end,
-                    interruptable = false,
-                    canMove       = false,
-                },
-            },
-            hit = {
-                {
-                    duration      = 0.3,
-                    after         = "default",
-                    action        = function() self:wasHit() end,
-                    canMove       = false,
-                    interruptable = false,
-                    invincible    = true,
-                }
-            },
-            afterHit = {
-                {
-                    duration      = 1.7,
-                    after         = "default",
-                    action        = function() self:afterHit() end,
-                    canMove       = true,
-                    interruptable = true,
-                    invincible    = true,
-                }
-            },
-        })
-
-        Event.on("player:move", function(dx) self:move(dx) end)
-        Event.on("player:jump", function(dt) self:jump() end)
     end,
 }
 
@@ -161,77 +92,6 @@ function Player:draw()
             self.pos.y - self.sH + 7)
         self.sprites:draw()
     love.graphics.pop()
-end
-
-function Player:update(dt)
-    self.sprites:update(dt)
-    self.behaviour:update(dt)
-end
-
-function Player:startWalk()
-    self.sprites:switch("walk")
-    self.platforming.isMoving = true
-end
-
-function Player:goIdle()
-    self.sprites:switch("idle")
-    self.platforming.isMoving = false
-end
-
-function Player:wasHit()
-end
-
-function Player:afterHit()
-end
-
-function Player:willJump()
-    self.platforming.isMoving = false
-end
-
-function Player:startJump()
-    self.sprites:switch("jump")
-    self.platforming.isMoving = true
-end
-
-function Player:didJump()
-    self.platforming.isMoving = false
-end
-
-function Player:move(dx)
-    -- Set movement direction
-    self.platforming.dx = dx
-
-    -- Cannot walk while doing something "important", like jumping
-    if self.behaviour.frame.interruptable == false then
-        return
-    end
-
-    if self.behaviour.state == "hit" then
-        return
-    end
-
-    -- Standing? Go idle
-    if self.platforming.dx == 0 then
-        if self.behaviour.state ~= "default" then
-            self.behaviour:setState("default")
-        end
-        return
-    end
-
-    -- Walking already?
-    if self.behaviour.state == "walking" then
-        return
-    end
-
-    self.behaviour:setState("walking")
-end
-
-function Player:jump()
-    -- Cannot jump while doing something uninterruptable
-    if not self.behaviour.frame.interruptable or not self.platforming.onGround then
-        return
-    end
-    self.behaviour:setState("willJump")
 end
 
 return Player
