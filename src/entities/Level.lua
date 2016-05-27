@@ -26,7 +26,7 @@ local Level = Class {
             end
         end
 
-        self.bgMusic:play()
+        -- self.bgMusic:play()
     end,
 }
 

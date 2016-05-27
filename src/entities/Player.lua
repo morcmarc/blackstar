@@ -13,12 +13,13 @@ local Player = Class {
         
         -- Platforming component
         self.platforming = {
-            a    = 1000, -- Acceleration
-            vMax = 300,  -- Max speed
-            hJ   = 500,  -- Jump height
-            mu   = 2000, -- Friction coefficient
-            dx   = 0,    -- Movement indicator (1: right, -1: left, 0: standing)
-            g    = 1300, -- Gravity
+            a     = 1000, -- Acceleration
+            vMax  = 300,  -- Max speed
+            vDash = 1000, -- Dash velocity
+            hJ    = 500,  -- Jump height
+            mu    = 2000, -- Friction coefficient
+            dx    = 0,    -- Movement indicator (1: right, -1: left, 0: standing)
+            g     = 1300, -- Gravity
         }
 
         -- Player controls component
@@ -108,8 +109,8 @@ function Player:draw()
 
     love.graphics.push()
         love.graphics.translate(self.pos.x, self.pos.y)
+        love.graphics.draw(self.trailingEffects.particles, -self.pos.x+self.sW / 2, self.pos.y-self.sH / 2)
         love.graphics.draw(self.canvas)
-        love.graphics.draw(self.trailingEffects.particles)
     love.graphics.pop()
 end
 

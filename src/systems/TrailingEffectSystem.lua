@@ -7,29 +7,25 @@ local TrailingEffectSystem = Tiny.processingSystem(Class {
 })
 
 function TrailingEffectSystem:process(e, dt)
-    local p = e.trailingEffects.particles
-    if not p then
-        p = love.graphics.newParticleSystem(e.canvas, 10)
-        p:setParticleLifetime(1)
-        p:setEmissionRate(5)
-        p:setSpread(0)
-        p:setPosition(64, 64)
-        p:setColors(
-            255, 255, 255, 128, 
+    if not e.trailingEffects.particles then
+        e.trailingEffects.particles = love.graphics.newParticleSystem(e.canvas, 100)
+        e.trailingEffects.particles:stop()
+        e.trailingEffects.particles:setParticleLifetime(1)
+        e.trailingEffects.particles:setEmissionRate(20)
+        e.trailingEffects.particles:setInsertMode("bottom")
+        e.trailingEffects.particles:setSpread(0)
+        e.trailingEffects.particles:setColors(
+            255, 255, 255, 64, 
             255, 255, 255, 0)
     else
-        local a = -1
-        if e.sprites.flipX then 
-            a = 1
-        end
-        p:setLinearAcceleration(200 * a, 0)
-        p:update(dt)
-    end
+        e.trailingEffects.particles:setPosition(e.pos.x, 0)
+        e.trailingEffects.particles:update(dt)
 
-    if e.platforming.isMoving then
-        p:start()
-    else
-        p:stop()
+        if e.platforming.isDashing then
+            e.trailingEffects.particles:start()
+        else
+            e.trailingEffects.particles:stop()
+        end
     end
 end
 

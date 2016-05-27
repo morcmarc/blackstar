@@ -81,15 +81,15 @@ function Ingame:update(dt)
 end
 
 function Ingame:enter()
-    self.level:toggleMusic("play")
+    -- self.level:toggleMusic("play")
 end
 
 function Ingame:leave()
-    self.level:toggleMusic("pause")
+    -- self.level:toggleMusic("pause")
 end
 
 function Ingame:resume()
-    self.level:toggleMusic("resume")
+    -- self.level:toggleMusic("resume")
 end
 
 return Ingame

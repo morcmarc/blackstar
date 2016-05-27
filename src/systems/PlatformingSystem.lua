@@ -24,10 +24,18 @@ function PlatformingSystem:process(e, dt)
         end
     end
 
+    if plt.isDashing and math.abs(e.vel.x) < 100 then
+        local d = 1
+        if e.sprites.flipX then
+            d = -1
+        end
+        e.vel.x = d * plt.vDash
+    end
+
     if plt.isJumping then
-        e.platforming.onGround = false
-        e.platforming.isJumping = false
-        e.vel.y = -e.platforming.hJ
+        plt.onGround = false
+        plt.isJumping = false
+        e.vel.y = -plt.hJ
     end
 end
 

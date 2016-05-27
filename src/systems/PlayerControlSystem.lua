@@ -13,6 +13,9 @@ local PlayerControlSystem = Tiny.processingSystem(Class{
                 :addButtonPair(Tactile.keys "a", Tactile.keys "d"),
             jump = Tactile.newControl()
                 :addButton(Tactile.keys "space")
+                :addButton(Tactile.gamepadButtons(1, 'a')),
+            dash = Tactile.newControl()
+                :addButton(Tactile.keys "lshift")
                 :addButton(Tactile.gamepadButtons(1, 'b')),
             attack = Tactile.newControl()
                 :addButton(Tactile.keys "j")
@@ -31,6 +34,7 @@ function PlayerControlSystem:process(e, dt)
 
     self.bindings.horizontal:update()
     self.bindings.jump:update()
+    self.bindings.dash:update()
     self.bindings.attack:update()
 
     -- Attack
@@ -48,10 +52,20 @@ function PlayerControlSystem:process(e, dt)
         return
     end
 
+    -- Dash
+    if self.bindings.dash:isDown() and e.platforming.onGround and not e.platforming.isDashing then
+        e.sprites:switch("walk", true)
+        e.platforming.isDashing = true
+        local at = Timer.after(0.3, function() e.platforming.isDashing = false end)
+        at:group(self.timers)
+        return
+    end
+
     -- Move
     e.platforming.dx = self.bindings.horizontal() * dt
     e.platforming.isMoving = e.platforming.dx ~= 0
 
+    -- Set player direction
     if e.platforming.dx < 0 then
         e.sprites.flipX = true
     elseif e.platforming.dx > 0 then

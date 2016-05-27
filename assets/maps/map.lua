@@ -74,7 +74,7 @@ return {
       },
       encoding = "base64",
       compression = "gzip",
-      data = "H4sIAAAAAAAAA+3VQQ0AAAgDMcC/aCTwgvBok7OwRdzIIYBNNggAfpg+WbeVXtUGa48UoA8AAA=="
+      data = "H4sIAAAAAAAAA+3DsQkAAAgDsOr/R/uFdEggCQAAwI+x6lr1AI9DV/SgDwAA"
     }
   }
 }
