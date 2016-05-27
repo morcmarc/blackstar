@@ -5,7 +5,7 @@ local Event  = require "vendor.knife.knife.event"
 local Cam = Class {
     init = function(self, player)
         self.player = player
-        self.c      = Camera(player.pos.x, player.pos.y - player.sH)
+        self.c      = Camera(player.pos.x, player.pos.y)
     end,
 }
 

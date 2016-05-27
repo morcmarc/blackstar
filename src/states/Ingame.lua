@@ -4,7 +4,6 @@ local Fireflies   = require "src.entities.Fireflies"
 local HUD         = require "src.entities.Hud"
 local Debug       = require "src.entities.Debug"
 local Level       = require "src.entities.Level"
-local Cursor      = require "src.entities.Cursor"
 local Theosophist = require "src.entities.Theosophist"
 local Shine       = require "vendor.shine"
 local Tiny        = require "vendor.tiny-ecs.tiny"
@@ -23,9 +22,8 @@ function Ingame:init()
     self.player      = Player(0,0)
     self.level       = Level(self.bumpWorld)
     self.camera      = Camera(self.player)
-    self.fireflies   = Fireflies("assets/sprites/firefly.png", 10, -1)
+    -- self.fireflies   = Fireflies("assets/sprites/firefly.png", 10, -1)
     self.theosophist = Theosophist(200,0)
-    self.cursor      = Cursor()
     self.hud         = HUD(self.player)
     self.debug       = Debug(self.bumpWorld, self.player, self.camera)
 
@@ -37,14 +35,14 @@ function Ingame:init()
         require ("src.systems.DumbAISystem")(self.player),
         require ("src.systems.DamageSystem")(),
         require ("src.systems.SpriteSystem")(),
-        require ("src.systems.PlayerControlSystem")(self.camera.c, self.cursor))
+        require ("src.systems.PlayerControlSystem")(self.camera.c),
+        require ("src.systems.TrailingEffectSystem")())
 
     -- Compose world
     self.world:add(self.player)
     self.world:add(self.level)
     self.world:add(self.camera)
-    self.world:add(self.cursor)
-    self.world:add(self.fireflies)
+    -- self.world:add(self.fireflies)
     self.world:add(self.theosophist)
     self.world:add(self.hud)
 
@@ -61,13 +59,12 @@ function Ingame:draw()
     self.postEffect:draw(function()
         self.camera:attach()
             self.level:draw()
-            self.fireflies:draw()
+            -- self.fireflies:draw()
             self.theosophist:draw()
             self.player:draw()
         self.camera:detach()
     end)
 
-    self.cursor:draw()
     self.hud:draw()
 
     if Blackstar._DEBUG_MODE then

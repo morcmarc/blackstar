@@ -15,7 +15,7 @@ local Player = Class {
         self.platforming = {
             a    = 1000, -- Acceleration
             vMax = 300,  -- Max speed
-            hJ   = 380,  -- Jump height
+            hJ   = 500,  -- Jump height
             mu   = 2000, -- Friction coefficient
             dx   = 0,    -- Movement indicator (1: right, -1: left, 0: standing)
             g    = 1300, -- Gravity
@@ -26,7 +26,7 @@ local Player = Class {
         
         -- Collision component
         self.collision = {
-            hitbox          = { w = 32, h = 128 },
+            hitbox          = { w = 128, h = 128 },
             checkCollisions = true,
             isSolid         = true,
         }
@@ -78,20 +78,38 @@ local Player = Class {
                 {1, 1, 4, 1, .09}
             },
         })
+
+        -- Enable trailing animations
+        self.trailingEffects = {
+            states = {"walk"},
+        }
+
+        self.canvas = love.graphics.newCanvas(self.sW, self.sH)
     end,
 }
 
 function Player:draw()
+    if self.isAttacking then
+        self.sprites.color = {0,0,255,255}
+    else
+        self.sprites.color = {255,255,255,255}
+    end
+
+    local c = love.graphics.getCanvas()
     love.graphics.push()
-        love.graphics.translate(
-            self.pos.x - self.sW + self.collision.hitbox.w / 2, 
-            self.pos.y - self.sH + 7)
-        if self.isAttacking then
-            self.sprites.color = {0,0,255,255}
-        else
-            self.sprites.color = {255,255,255,255}
-        end
-        self.sprites:draw()
+        love.graphics.origin()
+        love.graphics.setCanvas(self.canvas)
+            love.graphics.setBlendMode("alpha")
+            love.graphics.clear(128, 128, 0, 0)
+            love.graphics.translate(-self.sW / 2, -self.sH / 2)
+            self.sprites:draw()
+        love.graphics.setCanvas(c)
+    love.graphics.pop()
+
+    love.graphics.push()
+        love.graphics.translate(self.pos.x, self.pos.y)
+        love.graphics.draw(self.canvas)
+        love.graphics.draw(self.trailingEffects.particles)
     love.graphics.pop()
 end
 

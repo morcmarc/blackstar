@@ -6,8 +6,8 @@ local Level = Class {
     init = function(self, bumpWorld)
         self.bumpWorld        = bumpWorld
         self.map              = STI.new("assets/maps/map.lua")
-        self.x                =   0
-        self.y                = -64
+        self.x                = 0
+        self.y                = 0
         self.bgMusic          = love.audio.newSource("assets/audio/ambience.mp3")
 
         -- Add tiles and objects to Bump World

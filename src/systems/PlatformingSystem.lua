@@ -23,6 +23,12 @@ function PlatformingSystem:process(e, dt)
             e.vel.x = math.min(0, e.vel.x + plt.mu * dt)
         end
     end
+
+    if plt.isJumping then
+        e.platforming.onGround = false
+        e.platforming.isJumping = false
+        e.vel.y = -e.platforming.hJ
+    end
 end
 
 PlatformingSystem.filter = Tiny.requireAll(

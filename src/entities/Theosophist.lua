@@ -55,9 +55,7 @@ local Theosophist = Class {
 
 function Theosophist:draw()
     love.graphics.push()
-        love.graphics.translate(
-            self.pos.x, 
-            self.pos.y - 64)
+        love.graphics.translate(self.pos.x, self.pos.y)
         if self.ai.isAttacking then
             love.graphics.setColor(255,0,0)
         elseif self.ai.isAggroing then
