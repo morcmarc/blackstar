@@ -8,7 +8,7 @@ return {
   height = 10,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 1,
+  nextobjectid = 7,
   properties = {},
   tilesets = {
     {
@@ -60,7 +60,7 @@ return {
   layers = {
     {
       type = "tilelayer",
-      name = "Tile Layer 1",
+      name = "Background",
       x = 0,
       y = 0,
       width = 100,
@@ -75,6 +75,43 @@ return {
       encoding = "base64",
       compression = "gzip",
       data = "H4sIAAAAAAAAA+3DsQkAAAgDsOr/R/uFdEggCQAAwI+x6lr1AI9DV/SgDwAA"
+    },
+    {
+      type = "objectgroup",
+      name = "Enemies",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      properties = {},
+      objects = {
+        {
+          id = 2,
+          name = "theosophist_1",
+          type = "Theosophist",
+          shape = "rectangle",
+          x = 674.805,
+          y = 226.724,
+          width = 25.4897,
+          height = 25.4897,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 6,
+          name = "theosophist_2",
+          type = "Theosophist",
+          shape = "rectangle",
+          x = 322.646,
+          y = 226.053,
+          width = 25.4897,
+          height = 25.4897,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
     }
   }
 }

@@ -1,0 +1,30 @@
+[
+    {
+        "type": "theosophist",
+        "name": "Theosophist",
+        "platforming": {
+            "a": 1000,
+            "vMax": 160,
+            "hJ": 190,
+            "mu": 2000, 
+            "g": 1300
+        },
+        "collision": {
+            "hitbox": {
+                "w": 32,
+                "h": 32
+            },
+            "checkCollisions": true,
+            "isSolid": true
+        },
+        "health": {
+            "max": 50
+        },
+        "ai": {
+            "aggroRange": 200,
+            "attackRange": 32
+        },
+        "sW": 32,
+        "sH": 64
+    }
+]

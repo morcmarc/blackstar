@@ -1,5 +1,7 @@
-local Sodapop   = require "vendor.sodapop.sodapop"
-local Class     = require "vendor.hump.class"
+local Sodapop        = require "vendor.sodapop.sodapop"
+local Class          = require "vendor.hump.class"
+local HealthBar      = require "src.entities.HealthBar"
+local TrailingEffect = require "src.entities.TrailingEffect"
 
 local Player = Class {
     init = function(self, x, y)
@@ -38,6 +40,7 @@ local Player = Class {
             current      = 100,
             isInvincible = false,
             isAlive      = true,
+            bar          = HealthBar(self),
         }
 
         -- Stats and attributes
@@ -48,7 +51,7 @@ local Player = Class {
         self.sH = 128
         
         -- New sprite for holding animation states
-        self.sprites = Sodapop.newAnimatedSprite(self.sW, self.sH)
+        self.sprites = Sodapop.newAnimatedSprite(self.sW/2, self.sH/2)
 
         -- Idle animation
         self.sprites:addAnimation("idle", {
@@ -80,14 +83,15 @@ local Player = Class {
             },
         })
 
-        -- Enable trailing animations
-        self.trailingEffects = {
-            states = {"walk"},
-        }
-
         self.canvas = love.graphics.newCanvas(self.sW, self.sH)
+
+        self.trailingEffect = TrailingEffect(self)
     end,
 }
+
+function Player:update(dt)
+    self.trailingEffect:update(dt)
+end
 
 function Player:draw()
     if self.isAttacking then
@@ -102,16 +106,11 @@ function Player:draw()
         love.graphics.setCanvas(self.canvas)
             love.graphics.setBlendMode("alpha")
             love.graphics.clear(128, 128, 0, 0)
-            love.graphics.translate(-self.sW / 2, -self.sH / 2)
             self.sprites:draw()
         love.graphics.setCanvas(c)
     love.graphics.pop()
 
-    love.graphics.push()
-        love.graphics.translate(self.pos.x, self.pos.y)
-        love.graphics.draw(self.trailingEffects.particles, -self.pos.x+self.sW / 2, self.pos.y-self.sH / 2)
-        love.graphics.draw(self.canvas)
-    love.graphics.pop()
+    self.trailingEffect:draw()
 end
 
 return Player
