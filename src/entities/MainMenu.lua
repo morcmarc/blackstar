@@ -17,7 +17,6 @@ end
 function MainMenu:draw()
     local margin = 5
 
-    love.graphics.setBackgroundColor(0, 100, 200)
     love.graphics.clear()
     
     for k, v in pairs(self.menuItems) do

@@ -4,9 +4,8 @@ local Tactile = require "vendor.tactile.tactile"
 local Timer   = require "vendor.knife.knife.timer"
 
 local PlayerControlSystem = Tiny.processingSystem(Class{
-    init = function(self, camera)
+    init = function(self)
         self.timers = {}
-        self.camera = camera
         self.bindings = {
             horizontal = Tactile.newControl()
                 :addAxis(Tactile.gamepadAxis(1, "leftx"))
@@ -28,10 +27,6 @@ function PlayerControlSystem:process(e, dt)
     -- Progress timers
     Timer.update(dt, self.timers)
 
-    if not e.isPlayerControlled then 
-        return
-    end
-
     self.bindings.horizontal:update()
     self.bindings.jump:update()
     self.bindings.dash:update()
@@ -47,14 +42,12 @@ function PlayerControlSystem:process(e, dt)
 
     -- Jump
     if self.bindings.jump:isDown() and e.platforming.onGround then
-        e.sprites:switch("walk", true)
         e.platforming.isJumping = true
         return
     end
 
     -- Dash
     if self.bindings.dash:isDown() and e.platforming.onGround and not e.platforming.isDashing then
-        e.sprites:switch("walk", true)
         e.platforming.isDashing = true
         local at = Timer.after(0.3, function() e.platforming.isDashing = false end)
         at:group(self.timers)
@@ -64,23 +57,10 @@ function PlayerControlSystem:process(e, dt)
     -- Move
     e.platforming.dx = self.bindings.horizontal() * dt
     e.platforming.isMoving = e.platforming.dx ~= 0
-
-    -- Set player direction
-    if e.platforming.dx < 0 then
-        e.sprites.flipX = true
-    elseif e.platforming.dx > 0 then
-        e.sprites.flipX = false
-    end
-
-    if e.platforming.isMoving then
-        e.sprites:switch("walk", true)
-    else
-        e.sprites:switch("idle", true)
-    end
 end
 
 PlayerControlSystem.filter = Tiny.requireAll(
-    "isPlayerControlled",
+    "player",
     "pos", 
     "vel",
     "sprites", 

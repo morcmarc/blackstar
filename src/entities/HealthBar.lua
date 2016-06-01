@@ -17,7 +17,7 @@ end
 function HealthBar:draw()
     local hpp = math.floor(self.target.health.current / self.target.health.max * 100)
     -- Frame
-    love.graphics.setColor(256, 256, 256)
+    love.graphics.setColor(255, 255, 255)
     love.graphics.rectangle("line", 
         self.target.sW/2-self.width/2, -self.margin-32,
         self.width, self.thickness)

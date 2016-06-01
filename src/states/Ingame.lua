@@ -1,12 +1,12 @@
-local Player = require "src.entities.Player"
-local Camera = require "src.entities.Camera"
-local HUD    = require "src.entities.Hud"
-local Debug  = require "src.entities.Debug"
-local Level  = require "src.entities.Level"
-local Shine  = require "vendor.shine"
-local Tiny   = require "vendor.tiny-ecs.tiny"
-local Bump   = require "vendor.bump.bump"
-local Event  = require "vendor.knife.knife.event"
+local Player      = require "src.entities.Player"
+local HUD         = require "src.entities.Hud"
+local Debug       = require "src.entities.Debug"
+local Level       = require "src.entities.Level"
+local LevelLoader = require "src.utils.LevelLoader"
+local Shine       = require "vendor.shine"
+local Tiny        = require "vendor.tiny-ecs.tiny"
+local Bump        = require "vendor.bump.bump"
+local Event       = require "vendor.knife.knife.event"
 
 local Ingame = {}
 
@@ -15,29 +15,37 @@ function Ingame:init()
 
     -- Set up World
     self.bumpWorld = Bump.newWorld(32)
-    
-    -- Entities
-    self.player = Player(0,0)
-    self.camera = Camera(self.player)
-    self.hud    = HUD(self.player)
-    self.debug  = Debug(self.bumpWorld, self.player, self.camera)
 
+    -- Player
+    self.player = Player(0,0)
+
+    self.cameraTrackingSystem = require("src.systems.CameraTrackingSystem")(self.player)
+    self.renderSystem = require("src.systems.RenderSystem")(self.cameraTrackingSystem.camera)
+    self.levelRenderSystem = require("src.systems.LevelRenderSystem")(self.cameraTrackingSystem.camera)
     -- Initialise engine
     self.world = Tiny.world(
-        require ("src.systems.PlatformingSystem")(),
-        require ("src.systems.BumpPhysicsSystem")(self.bumpWorld),
-        require ("src.systems.UpdateSystem")(),
-        require ("src.systems.DumbAISystem")(self.player),
-        require ("src.systems.DamageSystem")(),
-        require ("src.systems.SpriteSystem")(),
-        require ("src.systems.PlayerControlSystem")(self.camera.c))
+        require("src.systems.PlatformingSystem")(),
+        require("src.systems.BumpPhysicsSystem")(self.bumpWorld),
+        require("src.systems.UpdateSystem")(),
+        require("src.systems.DumbAISystem")(self.player),
+        require("src.systems.DamageSystem")(),
+        require("src.systems.SpriteSystem")(),
+        require("src.systems.PlayerControlSystem")())
+    Tiny.addSystem(self.world, self.renderSystem)
+    Tiny.addSystem(self.world, self.levelRenderSystem)
+    Tiny.addSystem(self.world, self.cameraTrackingSystem)
 
-    self.level = Level(self.world, self.bumpWorld)
+    -- Create level
+    self.level = Level("assets/maps/map.lua")
+    -- Load level
+    LevelLoader.load(self.level, self.world, self.bumpWorld)
+
+    self.debug = Debug(self.bumpWorld, self.player, self.cameraTrackingSystem)
+    self.hud   = HUD(self.player)
 
     -- Compose world
     self.world:add(self.player)
     self.world:add(self.level)
-    self.world:add(self.camera)
     self.world:add(self.hud)
 
     -- Post processing
@@ -47,14 +55,11 @@ function Ingame:init()
 end
 
 function Ingame:draw()
-    love.graphics.setBackgroundColor(0, 0, 0, 255)
     love.graphics.clear()
 
     self.postEffect:draw(function()
-        self.camera:attach()
-            self.level:draw()
-            self.player:draw()
-        self.camera:detach()
+        love.graphics.draw(self.levelRenderSystem.canvas)
+        love.graphics.draw(self.renderSystem.canvas)
     end)
 
     self.hud:draw()
@@ -70,18 +75,6 @@ function Ingame:update(dt)
     end
 
     self.world:update(dt)
-end
-
-function Ingame:enter()
-    -- self.level:toggleMusic("play")
-end
-
-function Ingame:leave()
-    -- self.level:toggleMusic("pause")
-end
-
-function Ingame:resume()
-    -- self.level:toggleMusic("resume")
 end
 
 return Ingame

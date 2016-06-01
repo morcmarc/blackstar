@@ -11,8 +11,8 @@
         },
         "collision": {
             "hitbox": {
-                "w": 32,
-                "h": 32
+                "w": 128,
+                "h": 128
             },
             "checkCollisions": true,
             "isSolid": true
@@ -24,7 +24,7 @@
             "aggroRange": 200,
             "attackRange": 32
         },
-        "sW": 32,
-        "sH": 64
+        "sW": 128,
+        "sH": 128
     }
 ]

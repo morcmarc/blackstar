@@ -25,7 +25,7 @@ function DamageSystem:update(dt)
         local s = hit.source.health
 
         if t and s then
-            if t.isAlive and s.isAlive and hit.target.isPlayer then
+            if t.isAlive and s.isAlive and hit.target.player then
                 if not t.isInvincible then
                     -- @TODO: remove hard-coded damage
                     t.current = t.current - 25

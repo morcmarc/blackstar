@@ -22,9 +22,7 @@ function Debug:draw()
     local fontHeight = font:getHeight()
     local topOffset  = (cellSize - fontHeight) / 2
     
-    self.camera:attach()
-    love.graphics.push()
-    love.graphics.translate(0, -self.player.sH / 2)
+    self.camera.camera:attach()
     for cy, row in pairs(self.world.rows) do
         for cx, cell in pairs(row) do
             local l, t, w, h = getCellRect(self.world, cx,cy)
@@ -41,15 +39,7 @@ function Debug:draw()
             love.graphics.rectangle('line', l,t,w,h)
         end
     end
-    love.graphics.pop()
-    self.camera:detach()
-
-    local mx, my = love.mouse.getPosition()
-    local px, py = self.camera.c:cameraCoords(
-        self.player.pos.x + self.player.collision.hitbox.w / 2,
-        self.player.pos.y)
-    love.graphics.setColor(255, 0, 0)
-    love.graphics.line(px, py, mx, my)
+    self.camera.camera:detach()
 end
 
 return Debug
