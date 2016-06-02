@@ -12,31 +12,41 @@ local Class                = require "vendor.hump.class"
 local FileUtils            = require "src.utils.Files"
 local Enemies              = JSON:decode(FileUtils.read_all("src/entities/Enemies.json"))
 
+function findEnemy(t)
+    for _, e in ipairs(Enemies) do
+        if e.type == t then 
+            return e 
+        end
+    end
+    return nil
+end
+
 local GenericEnemy = Class {
     init = function(self, type, x, y)
+        local e = findEnemy(type)
         -- Components
-        self.enemy       = EnemyComponent(Enemies[1]["name"], type)
+        self.enemy       = EnemyComponent(e["name"], type)
         self.pos         = PositionComponent(x, y)
         self.vel         = VelocityComponent()
         self.platforming = PlatformingComponent(
-            Enemies[1]["platforming"]["a"],
-            Enemies[1]["platforming"]["vMax"], 
-            Enemies[1]["platforming"]["hJ"], 
-            Enemies[1]["platforming"]["mu"],
-            Enemies[1]["platforming"]["g"])
+            e["platforming"]["a"],
+            e["platforming"]["vMax"], 
+            e["platforming"]["hJ"], 
+            e["platforming"]["mu"],
+            e["platforming"]["g"])
         self.collision   = CollisionComponent(
-            Enemies[1]["collision"]["hitbox"],
-            Enemies[1]["collision"]["isSolid"],
-            Enemies[1]["collision"]["checkCollisions"])
+            e["collision"]["hitbox"],
+            e["collision"]["isSolid"],
+            e["collision"]["checkCollisions"])
         self.health      = HealthComponent(
-            Enemies[1]["health"]["max"],
+            e["health"]["max"],
             false,
             true)
         self.sprites     = SpriteComponent(128, 128)
         self.render      = RenderComponent(128, 128)
         self.ai          = SimpletonAIComponent(
-            Enemies[1]["ai"]["aggroRange"],
-            Enemies[1]["ai"]["attackRange"])
+            e["ai"]["aggroRange"],
+            e["ai"]["attackRange"])
 
         self.sprites:add("idle","assets/sprites/hero_stand.png",{{1,1,3,1,.15}})
         self.sprites:add("walk","assets/sprites/hero_walk.png",{{1,1,4,1,.09}})

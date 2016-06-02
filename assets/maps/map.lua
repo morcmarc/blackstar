@@ -8,7 +8,7 @@ return {
   height = 10,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 11,
+  nextobjectid = 12,
   properties = {},
   tilesets = {
     {
@@ -120,6 +120,19 @@ return {
           y = 6.70779,
           width = 20.1234,
           height = 18.7819,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 11,
+          name = "anthropophagist_1",
+          type = "Anthropophagist",
+          shape = "rectangle",
+          x = 1122.89,
+          y = 227.395,
+          width = 25.4897,
+          height = 25.4897,
           rotation = 0,
           visible = true,
           properties = {}

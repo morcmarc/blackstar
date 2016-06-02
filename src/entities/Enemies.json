@@ -1,6 +1,6 @@
 [
     {
-        "type": "theosophist",
+        "type": "Theosophist",
         "name": "Theosophist",
         "platforming": {
             "a": 1000,
@@ -22,6 +22,34 @@
         },
         "ai": {
             "aggroRange": 200,
+            "attackRange": 32
+        },
+        "sW": 128,
+        "sH": 128
+    },
+    {
+        "type": "Anthropophagist",
+        "name": "Anthropophagist",
+        "platforming": {
+            "a": 2000,
+            "vMax": 360,
+            "hJ": 490,
+            "mu": 2000,
+            "g": 1300
+        },
+        "collision": {
+            "hitbox": {
+                "w": 128,
+                "h": 128
+            },
+            "checkCollisions": true,
+            "isSolid": true
+        },
+        "health": {
+            "max": 50
+        },
+        "ai": {
+            "aggroRange": 1000,
             "attackRange": 32
         },
         "sW": 128,

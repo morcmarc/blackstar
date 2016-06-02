@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="10" tilewidth="32" tileheight="32" nextobjectid="11">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="10" tilewidth="32" tileheight="32" nextobjectid="12">
  <tileset firstgid="1" name="swamp1" tilewidth="32" tileheight="32" tilecount="1">
   <image source="swamp1.png" width="32" height="32"/>
   <tile id="0">
@@ -25,5 +25,6 @@
   <object id="10" name="player" type="Player" x="36.893" y="6.70779" width="20.1234" height="18.7819">
    <ellipse/>
   </object>
+  <object id="11" name="anthropophagist_1" type="Anthropophagist" x="1122.89" y="227.395" width="25.4897" height="25.4897"/>
  </objectgroup>
 </map>
