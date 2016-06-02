@@ -35,6 +35,8 @@ function LevelLoader.load(level, entities, world, bumpWorld)
             map:removeLayer(lindex)
         end
     end
+
+    world:add(level)
 end
 
 return LevelLoader

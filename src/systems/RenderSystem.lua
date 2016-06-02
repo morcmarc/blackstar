@@ -18,12 +18,12 @@ end
 
 function RenderSystem:process(e, dt)
     self.camera:attach()
-    love.graphics.setCanvas(self.canvas)
-        love.graphics.push()
-            love.graphics.translate(e.pos.x, e.pos.y)
-            e.sprites:draw()
-        love.graphics.pop()
-    love.graphics.setCanvas()
+        love.graphics.setCanvas(self.canvas)
+            love.graphics.push()
+                love.graphics.translate(e.pos.x, e.pos.y)
+                e.sprites:draw()
+            love.graphics.pop()
+        love.graphics.setCanvas()
     self.camera:detach()
 end
 

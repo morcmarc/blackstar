@@ -7,7 +7,6 @@ local RenderComponent      = require "src.components.RenderComponent"
 local SpriteComponent      = require "src.components.SpriteComponent"
 local SimpletonAIComponent = require "src.components.SimpletonAIComponent"
 local VelocityComponent    = require "src.components.VelocityComponent"
-local HealthBar            = require "src.entities.HealthBar"
 local JSON                 = assert(loadfile "vendor/json/JSON.lua")()
 local Class                = require "vendor.hump.class"
 local FileUtils            = require "src.utils.Files"
@@ -31,7 +30,8 @@ local GenericEnemy = Class {
             Enemies[1]["collision"]["checkCollisions"])
         self.health      = HealthComponent(
             Enemies[1]["health"]["max"],
-            false)
+            false,
+            true)
         self.sprites     = SpriteComponent(128, 128)
         self.render      = RenderComponent(128, 128)
         self.ai          = SimpletonAIComponent(

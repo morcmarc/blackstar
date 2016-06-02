@@ -1,5 +1,5 @@
 local Controls  = require "src.controls.MenuControls"
-local Menu      = require "src.entities.MainMenu"
+local Menu      = require "src.gui.MainMenu"
 local Event     = require "vendor.knife.knife.event"
 local Gamestate = require "vendor.hump.gamestate"
 local Ingame    = require "src.states.Ingame"

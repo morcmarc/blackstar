@@ -16,7 +16,7 @@ local Player = Class {
         self.vel         = VelocityComponent()
         self.platforming = PlatformingComponent()
         self.collision   = CollisionComponent({ w = 128, h = 128 }, true, true)
-        self.health      = HealthComponent(100, false)
+        self.health      = HealthComponent(100, false, false)
         self.sprites     = SpriteComponent(128, 128)
         self.render      = RenderComponent(128, 128)
 

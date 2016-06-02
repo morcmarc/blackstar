@@ -1,5 +1,5 @@
-local Debug                = require "src.entities.Debug"
-local HUD                  = require "src.entities.Hud"
+local Debug                = require "src.gui.Debug"
+local HUD                  = require "src.gui.Hud"
 local Level                = require "src.entities.Level"
 local LevelLoader          = require "src.utils.LevelLoader"
 local Player               = require "src.entities.Player"
@@ -8,6 +8,7 @@ local BumpPhysicsSystem    = require "src.systems.BumpPhysicsSystem"
 local CameraTrackingSystem = require "src.systems.CameraTrackingSystem"
 local DamageSystem         = require "src.systems.DamageSystem"
 local DumbAISystem         = require "src.systems.DumbAISystem"
+local HealthBarSystem      = require "src.systems.HealthBarSystem"
 local LevelRenderSystem    = require "src.systems.LevelRenderSystem"
 local PlatformingSystem    = require "src.systems.PlatformingSystem"
 local PlayerControlSystem  = require "src.systems.PlayerControlSystem"
@@ -25,12 +26,8 @@ local Ingame = {}
 function Ingame:init()
     -- Set up World
     self.bumpWorld = Bump.newWorld(32)
-
     self.world = Tiny.world()
-
-    -- Create level
     self.level = Level("assets/maps/map.lua")
-    
     self.entities = { player = nil, enemies = {} }
 
     -- Load level
@@ -41,6 +38,7 @@ function Ingame:init()
     self.cameraTrackingSystem = CameraTrackingSystem(self.entities.player)
     self.damageSystem         = DamageSystem()
     self.dumbAISystem         = DumbAISystem(self.entities.player)
+    self.healthBarSystem      = HealthBarSystem(self.cameraTrackingSystem.camera)
     self.levelRenderSystem    = LevelRenderSystem(self.cameraTrackingSystem.camera)
     self.platformingSystem    = PlatformingSystem()
     self.playerControlSystem  = PlayerControlSystem()
@@ -56,15 +54,16 @@ function Ingame:init()
     Tiny.addSystem(self.world, self.platformingSystem)
     Tiny.addSystem(self.world, self.playerControlSystem)
     Tiny.addSystem(self.world, self.renderSystem)
+    Tiny.addSystem(self.world, self.healthBarSystem)
     Tiny.addSystem(self.world, self.spriteSystem)
     Tiny.addSystem(self.world, self.updateSystem)
 
-    self.debug = Debug(self.bumpWorld, self.entities.player, self.cameraTrackingSystem)
-    self.hud   = HUD(self.entities.player)
-
-    -- Compose world
-    self.world:add(self.level)
-    self.world:add(self.hud)
+    self.debug = Debug(
+        self.bumpWorld, 
+        self.entities.player, 
+        self.cameraTrackingSystem)
+    
+    self.hud = HUD(self.entities.player)
 
     -- Post processing
     local vignette      = Shine.vignette()
@@ -78,6 +77,7 @@ function Ingame:draw()
     self.postEffect:draw(function()
         love.graphics.draw(self.levelRenderSystem.canvas)
         love.graphics.draw(self.renderSystem.canvas)
+        love.graphics.draw(self.healthBarSystem.canvas)
     end)
 
     self.hud:draw()
