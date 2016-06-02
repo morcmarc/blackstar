@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="10" tilewidth="32" tileheight="32" nextobjectid="7">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="10" tilewidth="32" tileheight="32" nextobjectid="11">
  <tileset firstgid="1" name="swamp1" tilewidth="32" tileheight="32" tilecount="1">
   <image source="swamp1.png" width="32" height="32"/>
   <tile id="0">
@@ -19,8 +19,11 @@
    H4sIAAAAAAAAA+3DsQkAAAgDsOr/R/uFdEggCQAAwI+x6lr1AI9DV/SgDwAA
   </data>
  </layer>
- <objectgroup name="Enemies">
+ <objectgroup name="Spawns">
   <object id="2" name="theosophist_1" type="Theosophist" x="674.805" y="226.724" width="25.4897" height="25.4897"/>
   <object id="6" name="theosophist_2" type="Theosophist" x="322.646" y="226.053" width="25.4897" height="25.4897"/>
+  <object id="10" name="player" type="Player" x="36.893" y="6.70779" width="20.1234" height="18.7819">
+   <ellipse/>
+  </object>
  </objectgroup>
 </map>

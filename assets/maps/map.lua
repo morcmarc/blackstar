@@ -8,7 +8,7 @@ return {
   height = 10,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 7,
+  nextobjectid = 11,
   properties = {},
   tilesets = {
     {
@@ -78,7 +78,7 @@ return {
     },
     {
       type = "objectgroup",
-      name = "Enemies",
+      name = "Spawns",
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -107,6 +107,19 @@ return {
           y = 226.053,
           width = 25.4897,
           height = 25.4897,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 10,
+          name = "player",
+          type = "Player",
+          shape = "ellipse",
+          x = 36.893,
+          y = 6.70779,
+          width = 20.1234,
+          height = 18.7819,
           rotation = 0,
           visible = true,
           properties = {}

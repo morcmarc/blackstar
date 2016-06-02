@@ -2,7 +2,6 @@ local CollisionComponent   = require "src.components.CollisionComponent"
 local EnemyComponent       = require "src.components.EnemyComponent"
 local HealthComponent      = require "src.components.HealthComponent"
 local PlatformingComponent = require "src.components.PlatformingComponent"
-local PlayerComponent      = require "src.components.PlayerComponent"
 local PositionComponent    = require "src.components.PositionComponent"
 local RenderComponent      = require "src.components.RenderComponent"
 local SpriteComponent      = require "src.components.SpriteComponent"
@@ -46,18 +45,3 @@ local GenericEnemy = Class {
 }
 
 return GenericEnemy
-
--- function GenericEnemy:draw()
---     love.graphics.push()
---         love.graphics.translate(self.pos.x, self.pos.y)
---         if self.ai.isAttacking then
---             love.graphics.setColor(255,0,0)
---         elseif self.ai.isAggroing then
---             love.graphics.setColor(255,128,64)
---         else
---             love.graphics.setColor(255,255,255)
---         end
---         love.graphics.rectangle("fill", 0, 32, self.sW, -self.sH)
---         self.health.bar:draw()
---     love.graphics.pop()
--- end

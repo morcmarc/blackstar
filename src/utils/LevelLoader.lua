@@ -1,8 +1,9 @@
 local GenericEnemy = require "src.entities.GenericEnemy"
+local Player = require "src.entities.Player"
 
 local LevelLoader = {}
 
-function LevelLoader.load(level, world, bumpWorld)
+function LevelLoader.load(level, entities, world, bumpWorld)
     local map = level.map.map
     -- Add tiles and objects to Bump World
     for lindex, layer in ipairs(map.layers) do
@@ -21,11 +22,15 @@ function LevelLoader.load(level, world, bumpWorld)
             end
         elseif layer.type == "objectgroup" then
             for _, object in ipairs(layer.objects) do
-                local e = GenericEnemy(object.type, object.x, object.y)
                 if object.type == "Player" then
-                    player = e
+                    local p = Player(object.x, object.y)
+                    entities.player = p
+                    world:add(p)
+                else
+                    local e = GenericEnemy(object.type, object.x, object.y)
+                    table.insert(entities.enemies, e)
+                    world:add(e)
                 end
-                world:add(e)
             end
             map:removeLayer(lindex)
         end

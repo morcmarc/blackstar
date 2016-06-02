@@ -1,50 +1,68 @@
-local Player      = require "src.entities.Player"
-local HUD         = require "src.entities.Hud"
-local Debug       = require "src.entities.Debug"
-local Level       = require "src.entities.Level"
-local LevelLoader = require "src.utils.LevelLoader"
-local Shine       = require "vendor.shine"
-local Tiny        = require "vendor.tiny-ecs.tiny"
-local Bump        = require "vendor.bump.bump"
-local Event       = require "vendor.knife.knife.event"
+local Debug                = require "src.entities.Debug"
+local HUD                  = require "src.entities.Hud"
+local Level                = require "src.entities.Level"
+local LevelLoader          = require "src.utils.LevelLoader"
+local Player               = require "src.entities.Player"
+
+local BumpPhysicsSystem    = require "src.systems.BumpPhysicsSystem"
+local CameraTrackingSystem = require "src.systems.CameraTrackingSystem"
+local DamageSystem         = require "src.systems.DamageSystem"
+local DumbAISystem         = require "src.systems.DumbAISystem"
+local LevelRenderSystem    = require "src.systems.LevelRenderSystem"
+local PlatformingSystem    = require "src.systems.PlatformingSystem"
+local PlayerControlSystem  = require "src.systems.PlayerControlSystem"
+local RenderSystem         = require "src.systems.RenderSystem"
+local SpriteSystem         = require "src.systems.SpriteSystem"
+local UpdateSystem         = require "src.systems.UpdateSystem"
+
+local Shine                = require "vendor.shine"
+local Tiny                 = require "vendor.tiny-ecs.tiny"
+local Bump                 = require "vendor.bump.bump"
+local Event                = require "vendor.knife.knife.event"
 
 local Ingame = {}
 
 function Ingame:init()
-    -- @TODO: implement "enter", "leave" etc gamestate handlers
-
     -- Set up World
     self.bumpWorld = Bump.newWorld(32)
 
-    -- Player
-    self.player = Player(0,0)
-
-    self.cameraTrackingSystem = require("src.systems.CameraTrackingSystem")(self.player)
-    self.renderSystem = require("src.systems.RenderSystem")(self.cameraTrackingSystem.camera)
-    self.levelRenderSystem = require("src.systems.LevelRenderSystem")(self.cameraTrackingSystem.camera)
-    -- Initialise engine
-    self.world = Tiny.world(
-        require("src.systems.PlatformingSystem")(),
-        require("src.systems.BumpPhysicsSystem")(self.bumpWorld),
-        require("src.systems.UpdateSystem")(),
-        require("src.systems.DumbAISystem")(self.player),
-        require("src.systems.DamageSystem")(),
-        require("src.systems.SpriteSystem")(),
-        require("src.systems.PlayerControlSystem")())
-    Tiny.addSystem(self.world, self.renderSystem)
-    Tiny.addSystem(self.world, self.levelRenderSystem)
-    Tiny.addSystem(self.world, self.cameraTrackingSystem)
+    self.world = Tiny.world()
 
     -- Create level
     self.level = Level("assets/maps/map.lua")
-    -- Load level
-    LevelLoader.load(self.level, self.world, self.bumpWorld)
+    
+    self.entities = { player = nil, enemies = {} }
 
-    self.debug = Debug(self.bumpWorld, self.player, self.cameraTrackingSystem)
-    self.hud   = HUD(self.player)
+    -- Load level
+    LevelLoader.load(self.level, self.entities, self.world, self.bumpWorld)
+
+    -- Initialise engine
+    self.bumpPhysicsSystem    = BumpPhysicsSystem(self.bumpWorld)
+    self.cameraTrackingSystem = CameraTrackingSystem(self.entities.player)
+    self.damageSystem         = DamageSystem()
+    self.dumbAISystem         = DumbAISystem(self.entities.player)
+    self.levelRenderSystem    = LevelRenderSystem(self.cameraTrackingSystem.camera)
+    self.platformingSystem    = PlatformingSystem()
+    self.playerControlSystem  = PlayerControlSystem()
+    self.renderSystem         = RenderSystem(self.cameraTrackingSystem.camera)
+    self.spriteSystem         = SpriteSystem()
+    self.updateSystem         = UpdateSystem()
+    
+    Tiny.addSystem(self.world, self.bumpPhysicsSystem)
+    Tiny.addSystem(self.world, self.cameraTrackingSystem)
+    Tiny.addSystem(self.world, self.damageSystem)
+    Tiny.addSystem(self.world, self.dumbAISystem)
+    Tiny.addSystem(self.world, self.levelRenderSystem)
+    Tiny.addSystem(self.world, self.platformingSystem)
+    Tiny.addSystem(self.world, self.playerControlSystem)
+    Tiny.addSystem(self.world, self.renderSystem)
+    Tiny.addSystem(self.world, self.spriteSystem)
+    Tiny.addSystem(self.world, self.updateSystem)
+
+    self.debug = Debug(self.bumpWorld, self.entities.player, self.cameraTrackingSystem)
+    self.hud   = HUD(self.entities.player)
 
     -- Compose world
-    self.world:add(self.player)
     self.world:add(self.level)
     self.world:add(self.hud)
 
