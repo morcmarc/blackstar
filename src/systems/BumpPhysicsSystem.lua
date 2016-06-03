@@ -1,4 +1,5 @@
 local Class = require "vendor.hump.class"
+local Event = require "vendor.knife.knife.event"
 local Tiny  = require "vendor.tiny-ecs.tiny"
 
 local BumpPhysicsSystem = Tiny.processingSystem(Class{
@@ -44,6 +45,10 @@ function BumpPhysicsSystem:process(e, dt)
                 end
             else
                 vel.x = 0
+            end
+        elseif col.type == "cross" then
+            if e.player and col.other.enemy and col.other.ai.isAttacking then
+                Event.dispatch("attack:normal", { target = e, source = col.other })
             end
         end
     end

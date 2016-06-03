@@ -28,7 +28,7 @@ function DamageSystem:update(dt)
             if t.isAlive and s.isAlive and hit.target.player then
                 if not t.isInvincible then
                     -- @TODO: remove hard-coded damage
-                    t.current = t.current - 25
+                    t.current = t.current - 5
 
                     if t.current > 1 then
                         t.isInvincible = true

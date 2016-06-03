@@ -32,7 +32,7 @@
         "name": "Anthropophagist",
         "platforming": {
             "a": 2000,
-            "vMax": 360,
+            "vMax": 100,
             "hJ": 490,
             "mu": 2000,
             "g": 1300

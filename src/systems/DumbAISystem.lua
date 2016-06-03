@@ -31,10 +31,6 @@ function DumbAISystem:process(e, dt)
     end
 
     e.ai.isAttacking = self.target.health.isAlive and inAttackRange
-
-    if e.ai.isAttacking then
-        Event.dispatch("attack:normal", { target = self.target, source = e })
-    end
 end
 
 DumbAISystem.filter = Tiny.requireAll("ai", "pos", "platforming")
